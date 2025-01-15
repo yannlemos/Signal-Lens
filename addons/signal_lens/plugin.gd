@@ -9,11 +9,19 @@ var signal_lens_debugger = SignalLensDebugger.new()
 
 #region Plugin Callbacks
 
+func _on_node_selected(node_path: NodePath) -> void:
+	signal_lens_debugger.editor.signal_bus_data_requested.emit(node_path)
+
 func _enter_tree() -> void:
 	add_debugger_plugin(signal_lens_debugger)
+	remote_node_inspector = RemoteNodeInspector.new()
+	remote_node_inspector.node_selected.connect(_on_node_selected)
+	add_inspector_plugin(remote_node_inspector)
 
 func _exit_tree() -> void:
 	remove_debugger_plugin(signal_lens_debugger)
+	remove_inspector_plugin(remote_node_inspector)
+	remote_node_inspector = null
 
 func _enable_plugin():
 	add_autoload_singleton(AUTOLOAD_NAME, "res://addons/signal_lens/signal_lens_runtime.gd")
@@ -22,6 +30,18 @@ func _disable_plugin():
 	remove_autoload_singleton(AUTOLOAD_NAME)
 
 #endregion
+
+var remote_node_inspector: RemoteNodeInspector
+		
+
+class RemoteNodeInspector extends EditorInspectorPlugin:
+	signal node_selected(node_path: NodePath)
+	
+	func _can_handle(object: Object) -> bool:
+		return object.get('Node/path') != null
+		
+	func _parse_begin(object: Object) -> void:
+		node_selected.emit(object.get('Node/path'))
 
 ## Backend debugger class that is necessary for debugger plugins
 ## Handles debugger callbacks such as receiving and sending data 
@@ -37,7 +57,7 @@ class SignalLensDebugger extends EditorDebuggerPlugin:
 	
 	## Runtime reference to the debugger panel
 	var editor: SignalLensEditor
-	
+		
 	## This override is necessary so you can send and receive
 	## messages from the project that is playing
 	func _has_capture(prefix):
