@@ -32,7 +32,7 @@ var current_node: NodePath = ""
 var block_new_inspections: bool = false
 
 ## If true, all incoming signal emissions will be drawn and won't fade out
-var freeze_emissions: bool = false
+var keep_emissions: bool = false
 
 ## Multiplier that increases or decreases emission drawing speed 
 ## Acquired from slider in scene
@@ -48,10 +48,18 @@ var pulsing_connections: Array = []
 @export var refresh_button: Button 
 @export var clear_button: Button
 @export var inactive_text: Label
-@export var lock_checkbox: CheckButton 
-@export var freeze_checkbox: CheckButton
+@export var pin_checkbox: CheckButton 
+@export var keep_emissions_checkbox: CheckButton
 @export var emission_speed_slider: Slider
-@export var emission_speed_icon: TextureRect
+@export var emission_speed_icon: Button
+
+## Initialize panel: Load icons
+func _ready() -> void:
+	clear_button.icon = EditorInterface.get_base_control().get_theme_icon("Clear", "EditorIcons")
+	refresh_button.icon = EditorInterface.get_base_control().get_theme_icon("Reload", "EditorIcons")
+	pin_checkbox.icon = EditorInterface.get_base_control().get_theme_icon("Pin", "EditorIcons")
+	keep_emissions_checkbox.icon = EditorInterface.get_base_control().get_theme_icon("Override", "EditorIcons")
+	emission_speed_icon.icon = EditorInterface.get_base_control().get_theme_icon("Timer", "EditorIcons")
 
 ## Requests inspection of [param current_node] in remote scene
 func request_node_data():
@@ -65,25 +73,25 @@ func receive_node_data(data: Array):
 ## Sets up editor on project play
 func start_session():
 	clear_graph()
-	lock_checkbox.button_pressed = false
-	freeze_checkbox.button_pressed = false
+	pin_checkbox.button_pressed = false
+	keep_emissions_checkbox.button_pressed = false
 	emission_speed_slider.editable = true
-	emission_speed_icon.modulate = Color(emission_speed_icon.modulate, 1.0)
+	emission_speed_icon.disabled = false
 	node_path_line_edit.placeholder_text = TUTORIAL_TEXT
 	inactive_text.hide()
 
 ## Cleans up editor on project stop
 func stop_session():
 	clear_graph()
-	lock_checkbox.disabled = true
-	freeze_checkbox.disabled = true
+	pin_checkbox.disabled = true
+	keep_emissions_checkbox.disabled = true
 	refresh_button.disabled = true
 	clear_button.disabled = true
 	emission_speed_slider.editable = false
-	emission_speed_icon.modulate = Color(emission_speed_icon.modulate, 0.35)
+	emission_speed_icon.disabled = true
 	node_path_line_edit.text = ""
-	lock_checkbox.button_pressed = false
-	freeze_checkbox.button_pressed = false
+	pin_checkbox.button_pressed = false
+	keep_emissions_checkbox.button_pressed = false
 	inactive_text.show()
 
 ## Assigns a [param target_node] to internal member [param current_node]
@@ -205,13 +213,13 @@ func draw_node_data(data: Array):
 	# in case the buttons are disabled, they are enabled again
 	if clear_button.disabled:
 		clear_button.disabled = false
-	if lock_checkbox.disabled:
-		lock_checkbox.disabled = false
-	if freeze_checkbox.disabled:
-		freeze_checkbox.disabled = false
+	if pin_checkbox.disabled:
+		pin_checkbox.disabled = false
+	if keep_emissions_checkbox.disabled:
+		keep_emissions_checkbox.disabled = false
 	if emission_speed_slider.editable:
 		emission_speed_slider.editable = true
-		emission_speed_icon.modulate = Color(emission_speed_icon.modulate, 1.0)
+		emission_speed_icon.disabled = false
 
 func create_node(node_name: String, title_appendix: String = "") -> SignalLensGraphNode:
 	var new_node = SignalLensGraphNode.new()
@@ -259,7 +267,7 @@ func pulse_connection(connection: Dictionary) -> void:
 	var to_node = connection["to_node"]
 	var to_port = connection["to_port"]
 	
-	if freeze_emissions: 
+	if keep_emissions: 
 		graph_edit.set_connection_activity(from_node, from_port, to_node, to_port, 1.0)
 	else:
 		fade_out_connection(connection)
@@ -285,13 +293,13 @@ func get_port_index_from_signal_name(signal_name: String):
 			return child.get_index()
 	return -1
 
-func freeze_signal_emissions():
-	freeze_emissions = true
+func keep_signal_emissions():
+	keep_emissions = true
 
-func unfreeze_signal_emissions():
+func dont_keep_signal_emissions():
 	for connection in pulsing_connections:
 		fade_out_connection(connection)
-	freeze_emissions = false
+	keep_emissions = false
 
 #endregion
 
@@ -326,16 +334,16 @@ func _on_clear_button_pressed() -> void:
 func _on_repo_button_pressed() -> void:
 	OS.shell_open("https://github.com/yannlemos/signal-lens")
 
-func _on_lock_checkbox_toggled(toggled_on: bool) -> void:
+func _on_pin_checkbox_toggled(toggled_on: bool) -> void:
 	block_new_inspections = toggled_on
 
 func _on_emission_speed_slider_value_changed(value: float) -> void:
 	emission_speed_multiplier = value
 
-func _on_freeze_checkbox_toggled(toggled_on: bool) -> void:
+func _on_keep_emissions_checkbox_toggled(toggled_on: bool) -> void:
 	if toggled_on:
-		freeze_signal_emissions()
+		keep_signal_emissions()
 	else:
-		unfreeze_signal_emissions()
+		dont_keep_signal_emissions()
 
 #endregion
