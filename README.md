@@ -41,7 +41,7 @@ I'll take a look at it as soon as possible!
 
 ## Credits
 
-Developed by [Yann Lemos](https://github.com/yannlemos) and [contributors](https://github.com/yannlemos/Signal-Lens) to the repository.
+Developed by [Yann Lemos](https://github.com/yannlemos) and [contributors](https://github.com/yannlemos/Signal-Lens/graphs/contributors) to the repository.
 Released under the MIT license.
 Special thanks to my friends at Studio Bravarda.
 
