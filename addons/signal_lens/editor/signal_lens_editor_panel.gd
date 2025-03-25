@@ -318,9 +318,16 @@ func dont_keep_signal_emissions():
 
 #region Panel Resizing
 
-var _original_panel_size: float
+
+
+# Reference to the Split Container that holds the bottom panel in the editor
 var _editor_dock
 
+# split_offset value of editor dock, works as a size for the panel
+# Important: the value is negative because of split_offset's implementation
+var _original_panel_size: float
+
+## Grabs a reference to the parent split container of the debugger
 func _get_parent_editor_split():
 	var base = EditorInterface.get_base_control()
 	var waiting := base.get_children()
@@ -336,19 +343,23 @@ func _get_parent_editor_split():
 		else:
 			waiting.append_array(node.get_children())
 
-
+## Resizes panel to new_size if possible
 func _resize_panel(new_size: float):
 	if _can_resize_panel():
 		_editor_dock.split_offset = new_size
 
 
 func _can_resize_panel() -> bool:
+	# If user wants to resize panel on open
 	if not ProjectSettings.get_setting("addons/Signal Lens/resize_panel_on_open"): return false
+	
+	# If editor dock reference has been acquired
 	if not _editor_dock: return false
 	return true
 
 
 func _on_visibility_changed() -> void:
+	# Only resize bottom panel if both visible and visible in editor
 	if visible and is_visible_in_tree():
 		_resize_panel(-ProjectSettings.get_setting("addons/Signal Lens/height_to_resize_to"))
 	else:  

@@ -19,6 +19,7 @@ var remote_node_inspector: SignalLensRemoteNodeInspector = null
 ## Editor panel that draws data received from remote scene
 var editor_panel: SignalLensEditorPanel = null
 
+
 ## Setups the plugin and connects internal components
 ## Called on enter editor scene tree
 func initialize():
@@ -30,6 +31,7 @@ func initialize():
 	add_inspector_plugin(remote_node_inspector)
 	add_debugger_plugin(debugger)
 	
+	# Add plugin project settings
 	setup_project_settings()
 	
 	# Connect node selection in scene tree to backend request for
@@ -60,19 +62,9 @@ func initialize():
 	# selected node's path
 	remote_node_inspector.node_selected.connect(editor_panel.assign_node_path)
 
-## Removes plugin from editor and cleans references
-func cleanup():
-	# De-register plugins from engine
-	remove_debugger_plugin(debugger)
-	remove_inspector_plugin(remote_node_inspector)
-	
-	# Remove references to initialized components
-	remote_node_inspector = null
-	debugger = null
-	editor_panel = null
 
+## Creates and sets default values for Project Settings related to the plugin
 func setup_project_settings():
-	
 	# Resize on open
 	var setting_resize_panel_on_open = "addons/Signal Lens/resize_panel_on_open"
 	if not ProjectSettings.has_setting(setting_resize_panel_on_open):
@@ -98,7 +90,20 @@ func setup_project_settings():
 		})
 	ProjectSettings.set_initial_value(setting_height_to_resize_to, 500)
 	ProjectSettings.set_as_basic(setting_height_to_resize_to, true)
+
+
+## Removes plugin from editor and cleans references
+func cleanup():
+	# De-register plugins from engine
+	remove_debugger_plugin(debugger)
+	remove_inspector_plugin(remote_node_inspector)
 	
+	# Remove references to initialized components
+	remote_node_inspector = null
+	debugger = null
+	editor_panel = null
+
+
 #region Engine Callbacks
 
 func _enter_tree() -> void:
