@@ -19,6 +19,7 @@ var remote_node_inspector: SignalLensRemoteNodeInspector = null
 ## Editor panel that draws data received from remote scene
 var editor_panel: SignalLensEditorPanel = null
 
+
 ## Setups the plugin and connects internal components
 ## Called on enter editor scene tree
 func initialize():
@@ -29,6 +30,9 @@ func initialize():
 	# Register plugins in the engine
 	add_inspector_plugin(remote_node_inspector)
 	add_debugger_plugin(debugger)
+	
+	# Add plugin project settings
+	setup_project_settings()
 	
 	# Connect node selection in scene tree to backend request for
 	# that node's signal data
@@ -58,6 +62,36 @@ func initialize():
 	# selected node's path
 	remote_node_inspector.node_selected.connect(editor_panel.assign_node_path)
 
+
+## Creates and sets default values for Project Settings related to the plugin
+func setup_project_settings():
+	# Resize on open
+	var setting_resize_panel_on_open = "addons/Signal Lens/resize_panel_on_open"
+	if not ProjectSettings.has_setting(setting_resize_panel_on_open):
+		ProjectSettings.set_setting(setting_resize_panel_on_open, true)
+	ProjectSettings.add_property_info({
+		"name": setting_resize_panel_on_open,
+		"type": TYPE_BOOL,
+		"hint": TYPE_BOOL,
+		"hint_string": TYPE_BOOL
+		})
+	ProjectSettings.set_initial_value(setting_resize_panel_on_open, true)
+	ProjectSettings.set_as_basic(setting_resize_panel_on_open, true)
+
+	# Resize on open
+	var setting_height_to_resize_to = "addons/Signal Lens/height_to_resize_to"
+	if not ProjectSettings.has_setting(setting_height_to_resize_to):
+		ProjectSettings.set_setting(setting_height_to_resize_to, 500)
+	ProjectSettings.add_property_info({
+		"name": setting_height_to_resize_to,
+		"type": TYPE_FLOAT,
+		"hint": TYPE_FLOAT,
+		"hint_string": TYPE_FLOAT
+		})
+	ProjectSettings.set_initial_value(setting_height_to_resize_to, 500)
+	ProjectSettings.set_as_basic(setting_height_to_resize_to, true)
+
+
 ## Removes plugin from editor and cleans references
 func cleanup():
 	# De-register plugins from engine
@@ -68,6 +102,7 @@ func cleanup():
 	remote_node_inspector = null
 	debugger = null
 	editor_panel = null
+
 
 #region Engine Callbacks
 

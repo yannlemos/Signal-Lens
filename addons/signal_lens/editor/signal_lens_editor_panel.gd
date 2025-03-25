@@ -56,6 +56,7 @@ var pulsing_connections: Array = []
 
 ## Initialize panel: Load icons
 func _ready() -> void:
+	_get_parent_editor_split()
 	clear_button.icon = EditorInterface.get_base_control().get_theme_icon("Clear", "EditorIcons")
 	refresh_button.icon = EditorInterface.get_base_control().get_theme_icon("Reload", "EditorIcons")
 	pin_checkbox.icon = EditorInterface.get_base_control().get_theme_icon("Pin", "EditorIcons")
@@ -271,7 +272,6 @@ func draw_signal_emission(data: Array):
 			pulse_connection(connection)
 
 
-
 func pulse_connection(connection: Dictionary) -> void:
 	if connection not in pulsing_connections: pulsing_connections.append(connection)
 	
@@ -313,6 +313,58 @@ func dont_keep_signal_emissions():
 	for connection in pulsing_connections:
 		fade_out_connection(connection)
 	keep_emissions = false
+
+#endregion
+
+#region Panel Resizing
+
+
+
+# Reference to the Split Container that holds the bottom panel in the editor
+var _editor_dock
+
+# split_offset value of editor dock, works as a size for the panel
+# Important: the value is negative because of split_offset's implementation
+var _original_panel_size: float
+
+## Grabs a reference to the parent split container of the debugger
+func _get_parent_editor_split():
+	var base = EditorInterface.get_base_control()
+	var waiting := base.get_children()
+	while not waiting.is_empty():
+		var node := waiting.pop_back() as Node
+		if node.name.find("DockVSplitCenter") >= 0:
+			_editor_dock = node
+			_original_panel_size = _editor_dock.split_offset
+			if visible:
+				_resize_panel(-ProjectSettings.get_setting("addons/Signal Lens/height_to_resize_to"))
+			else:
+				_resize_panel(0)
+		else:
+			waiting.append_array(node.get_children())
+
+## Resizes panel to new_size if possible
+func _resize_panel(new_size: float):
+	if _can_resize_panel():
+		_editor_dock.split_offset = new_size
+
+
+func _can_resize_panel() -> bool:
+	# If user wants to resize panel on open
+	if not ProjectSettings.get_setting("addons/Signal Lens/resize_panel_on_open"): return false
+	
+	# If editor dock reference has been acquired
+	if not _editor_dock: return false
+	return true
+
+
+func _on_visibility_changed() -> void:
+	# Only resize bottom panel if both visible and visible in editor
+	if visible and is_visible_in_tree():
+		_resize_panel(-ProjectSettings.get_setting("addons/Signal Lens/height_to_resize_to"))
+	else:  
+		_resize_panel(_original_panel_size)
+
 
 #endregion
 
