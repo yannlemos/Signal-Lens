@@ -48,6 +48,7 @@ var pulsing_connections: Array = []
 @export var refresh_button: Button 
 @export var clear_button: Button
 @export var inactive_text: Label
+@export var warning_text: Label
 @export var pin_checkbox: CheckButton 
 @export var keep_emissions_checkbox: CheckButton
 @export var emission_speed_slider: Slider
@@ -80,6 +81,7 @@ func start_session():
 	node_path_line_edit.placeholder_text = TUTORIAL_TEXT
 	inactive_text.hide()
 
+
 ## Cleans up editor on project stop
 func stop_session():
 	clear_graph()
@@ -93,6 +95,9 @@ func stop_session():
 	pin_checkbox.button_pressed = false
 	keep_emissions_checkbox.button_pressed = false
 	inactive_text.show()
+	warning_text.hide()
+	warning_text.text = ""
+
 
 ## Assigns a [param target_node] to internal member [param current_node]
 func assign_node_path(target_node: NodePath):
@@ -152,6 +157,14 @@ func draw_node_data(data: Array):
 	
 	# Retrieve the targeted node from the data array, which is always index 0
 	var target_node_name = data[0]
+	
+	# Handle root node inspection edge case
+	if target_node_name == "Root":
+		warning_text.show()
+		warning_text.text = "Root node inspection is not supported."
+		return
+	else:
+		warning_text.hide()
 
 	# Retrieve the targeted node signal data, which is always index 1
 	var target_node_signal_data: Array = data[1]
