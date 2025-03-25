@@ -27,7 +27,7 @@ func _on_node_signal_data_requested(prefix, data) -> bool:
 	
 	# Avoid error when trying to inspect root node
 	if new_target_node == get_tree().root:
-		push_warning("Root node inspection is not supported in current version of Signal Lens.")
+		EngineDebugger.send_message("signal_lens:incoming_node_signal_data", ["Root"])
 		return false
 	
 	# Disconnect this autoload's callable connections from the previously targeted node's signals
