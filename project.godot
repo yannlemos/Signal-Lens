@@ -8,6 +8,13 @@
 
 config_version=5
 
+[addons]
+
+signal-lens/resize_panel_on_open=true
+Signal-Lens/resize_panel_on_open=true
+"Signal Lens/resize_panel_on_open"=false
+"Signal Lens/height_to_resize_to"=700.0
+
 [application]
 
 config/name="Signal Lens"
