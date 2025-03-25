@@ -1,9 +1,13 @@
 extends Control
 
+signal counter_updated(new_value: int)
+
 @onready var counter_value_label: Label = $VBoxContainer/Counter/CounterValueLabel
 
 var _counter: int = 0
-signal counter_updated(new_value: int)
+
+func _ready() -> void:
+	counter_updated.connect(func(value): print("Signal fired from anonymous lambda! Value is " + str(value)))
 
 func _on_counter_updated(new_value: int) -> void:
 	counter_value_label.text = str(new_value)

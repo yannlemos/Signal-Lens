@@ -97,19 +97,38 @@ func _on_node_signal_data_requested(prefix, data) -> bool:
 	EngineDebugger.send_message("signal_lens:incoming_node_signal_data", [target_node_name, target_node_signal_data])
 	return true
 
+
 func parse_signal_callables_to_debugger_format(raw_signal_connections):
 	var parsed_signal_callables: Array[Dictionary]
 	# Iterate all connections of signal to parse callables
 	for raw_signal_connection: Dictionary in raw_signal_connections:
-		var parsed_callable_object_name: String = raw_signal_connection["callable"].get_object().get("name")
+		var parsed_callable_object: Object = raw_signal_connection["callable"].get_object()
+		var parsed_callable_object_name: String
+		
+		# If object has property "name", get this property
+		# Otherwise, get the string value of the object
+		# This is important to allow parsing anonymous lambdas, which
+		# don't have name properties. The names in the nodes are not
+		# very user-friendly right now, so this is a good spot for a 
+		# TODO: improve readability of anonymous lambda nodes
+		if parsed_callable_object.get("name") != null:
+			parsed_callable_object_name = parsed_callable_object.get("name")
+		else:
+			parsed_callable_object_name = parsed_callable_object.to_string()
+		
 		var parsed_callable_method_name = str(raw_signal_connection["callable"].get_method())
+		
+		# Don't parse callable that is in this autoload
 		if parsed_callable_method_name == "_on_target_node_signal_emitted": continue
+		
 		var parsed_callable_data = {
 			"object_name": parsed_callable_object_name, 
 			"method_name": parsed_callable_method_name
 			}
+		
 		parsed_signal_callables.append(parsed_callable_data)
 	return parsed_signal_callables
+
 
 ## This callable received all signal emissions from the currently targeted node
 ## and sends them to the editor panel
