@@ -264,6 +264,8 @@ func clean_connection_activity():
 #region Signal Emission Rendering
 
 func draw_signal_emission(data: Array):
+	# Avoid trying to draw signal emission if graph not fully drawn yet
+	if graph_edit.get_child_count() <= 1: return
 	var target_node: GraphNode = graph_edit.get_child(1)
 	var port_index = get_port_index_from_signal_name(data[1])
 	if port_index == -1: return
