@@ -4,20 +4,21 @@
 
 <p align="center">
 <b>A Visual Debugger for Signals</b><br>
-Supports Godot 4.3 and 4.4 Beta versions.
+Supports Godot 4.3 and 4.4.
 </p>
 
-![Key](https://github.com/user-attachments/assets/7ac3506e-2553-40ec-8bfb-462868816f3e)
-
+![Signal Lens 1 3 Hero Image](https://github.com/user-attachments/assets/d6d5733f-a971-419e-8f05-2f7ed8b77e24)
 
 ## Features
-- Click on a node in the remote scene tree and instantly view all its signals' connections
-- View signal emissions in real-time as they are emitted in-game
-- Select and rearrange a graph view to inspect your signal connections
-- Freeze signal emissions so you can inspect them later
-- Modify the signal emission speed so you can fine-tune the experience for your debugging purposes
-- Supports inspection of built-in and custom signals
+- Click on a node in the remote scene tree and instantly view all its signals' connections.
+- View signal emissions in real-time as they are emitted in-game.
+- Select and rearrange a graph view to inspect your signal connections.
+- Keep signal emissions so you can inspect them later.
+- Modify the signal emission speed so you can fine-tune the experience for your debugging purposes.
+- Supports inspection of built-in and custom signals.
 - Supports inspection of built-in nodes, custom nodes and autoloads — if it's in the remote tree, you can inspect it.
+- Draws both anonymous and named callables that are connected to signal.
+- Inspection of Object, RefCounted and Resource types not supported (yet!)
 
 ## Installation
 
