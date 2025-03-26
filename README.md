@@ -16,7 +16,7 @@ Supports Godot 4.3 and 4.4.
 - Keep signal emissions so you can inspect them later.
 - Modify the signal emission speed so you can fine-tune the experience for your debugging purposes.
 - Supports inspection of built-in and custom signals.
-- Supports inspection of built-in nodes, custom nodes and autoloads — if it's in the remote tree, you can inspect it.
+- Supports inspection of built-in, custom and autoload nodes — if it's in the remote tree, you can inspect it.
 - Draws both anonymous and named callables that are connected to a signal.
 - Inspection of Object, RefCounted and Resource types not supported (yet!)
 
