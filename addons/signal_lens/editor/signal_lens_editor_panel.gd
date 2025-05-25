@@ -44,8 +44,9 @@ var pulsing_connections: Array = []
 
 # Scene references
 @export var graph_edit: GraphEdit 
-@export var node_path_line_edit: LineEdit 
+@export var node_path_line_edit: LineEdit
 @export var refresh_button: Button 
+@export var options_button: Button
 @export var clear_button: Button
 @export var inactive_text: Label
 @export var warning_text: Label
@@ -57,6 +58,7 @@ var pulsing_connections: Array = []
 ## Initialize panel: Load icons
 func _ready() -> void:
 	_get_parent_editor_split()
+	options_button.icon = EditorInterface.get_base_control().get_theme_icon("GuiTabMenuHl", "EditorIcons")
 	clear_button.icon = EditorInterface.get_base_control().get_theme_icon("Clear", "EditorIcons")
 	refresh_button.icon = EditorInterface.get_base_control().get_theme_icon("Reload", "EditorIcons")
 	pin_checkbox.icon = EditorInterface.get_base_control().get_theme_icon("Pin", "EditorIcons")
