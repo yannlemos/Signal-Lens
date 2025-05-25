@@ -21,6 +21,11 @@ const DEFAULT_CONNECTION_OPACITY: float = 0.3
 ## in a way that provides more legibility in the code
 enum Direction {LEFT, RIGHT}
 
+## This enum keeps available option IDs
+enum Options {
+	HIDE_SIGNALS_WITHOUT_CONNECTIONS
+}
+
 ## Emitted on user pressed "refresh" button
 signal node_data_requested(node_path)
 
@@ -42,15 +47,21 @@ var emission_speed_multiplier: float = 1.0
 ## all cleanup together when unfreezing emissions
 var pulsing_connections: Array = []
 
+## Value of options
+var settings: Dictionary = {
+	Options.HIDE_SIGNALS_WITHOUT_CONNECTIONS: true,
+}
+
 # Scene references
 @export var graph_edit: GraphEdit 
 @export var node_path_line_edit: LineEdit
 @export var refresh_button: Button 
-@export var options_button: Button
+@export var options_button: MenuButton
+@onready var options_popup: PopupMenu = options_button.get_popup()
 @export var clear_button: Button
 @export var inactive_text: Label
 @export var warning_text: Label
-@export var pin_checkbox: CheckButton 
+@export var pin_checkbox: CheckButton
 @export var keep_emissions_checkbox: CheckButton
 @export var emission_speed_slider: Slider
 @export var emission_speed_icon: Button
@@ -64,6 +75,7 @@ func _ready() -> void:
 	pin_checkbox.icon = EditorInterface.get_base_control().get_theme_icon("Pin", "EditorIcons")
 	keep_emissions_checkbox.icon = EditorInterface.get_base_control().get_theme_icon("Override", "EditorIcons")
 	emission_speed_icon.icon = EditorInterface.get_base_control().get_theme_icon("Timer", "EditorIcons")
+	options_button.get_popup().index_pressed.connect(_on_options_index_pressed) # NOTE: ID & index must have same value!
 
 ## Requests inspection of [param current_node] in remote scene
 func request_node_data():
@@ -181,8 +193,12 @@ func draw_node_data(data: Array):
 	
 	# Start iterating signal by signal
 	for signal_data in target_node_signal_data:
+		# Check signal connections and skip not connected signals (based on settings)
+		if settings[Options.HIDE_SIGNALS_WITHOUT_CONNECTIONS] and signal_data["callables"].size() == 0: continue
+		
 		# Get the color based on the index so we can have the rainbow vibes
 		var slot_color = get_slot_color(current_signal_index, target_node_signal_data.size())
+		
 		# Create the slot button with the signal's name
 		create_button_slot(signal_data["signal"], target_node, Direction.RIGHT, slot_color)
 		
@@ -414,5 +430,10 @@ func _on_keep_emissions_checkbox_toggled(toggled_on: bool) -> void:
 		keep_signal_emissions()
 	else:
 		dont_keep_signal_emissions()
+
+func _on_options_index_pressed(option_index: int) -> void:
+	if options_popup.is_item_checkable(option_index):
+		settings[option_index] = not options_popup.is_item_checked(option_index) # Change state
+		options_popup.set_item_checked(option_index, settings[option_index]) # Apply state
 
 #endregion

@@ -111,11 +111,14 @@ theme_override_constants/margin_bottom = 15
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="OptionsButton" type="Button" parent="EditorPanel/MainButtonsContainer/HBoxContainer2"]
+[node name="OptionsButton" type="MenuButton" parent="EditorPanel/MainButtonsContainer/HBoxContainer2"]
 layout_mode = 2
 tooltip_text = "Options Button
-See and modify options."
-disabled = true
+See & Change options."
+item_count = 1
+popup/item_0/text = "Hide signals without connections"
+popup/item_0/checkable = 1
+popup/item_0/checked = true
 
 [node name="ClearButton" type="Button" parent="EditorPanel/MainButtonsContainer/HBoxContainer2"]
 layout_mode = 2
@@ -234,7 +237,6 @@ expand_icon = true
 [connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
 [connection signal="node_deselected" from="EditorPanel/GraphEdit" to="." method="_on_graph_edit_node_deselected"]
 [connection signal="node_selected" from="EditorPanel/GraphEdit" to="." method="_on_graph_edit_node_selected"]
-[connection signal="pressed" from="EditorPanel/MainButtonsContainer/HBoxContainer2/OptionsButton" to="." method="_on_clear_button_pressed"]
 [connection signal="pressed" from="EditorPanel/MainButtonsContainer/HBoxContainer2/ClearButton" to="." method="_on_clear_button_pressed"]
 [connection signal="pressed" from="EditorPanel/MainButtonsContainer/HBoxContainer2/RefreshButton" to="." method="_on_refresh_button_pressed"]
 [connection signal="toggled" from="EditorPanel/MainButtonsContainer/HBoxContainer2/PinCheckbox" to="." method="_on_pin_checkbox_toggled"]
