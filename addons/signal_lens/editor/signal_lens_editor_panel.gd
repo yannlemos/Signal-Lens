@@ -435,5 +435,6 @@ func _on_options_index_pressed(option_index: int) -> void:
 	if options_popup.is_item_checkable(option_index):
 		settings[option_index] = not options_popup.is_item_checked(option_index) # Change state
 		options_popup.set_item_checked(option_index, settings[option_index]) # Apply state
+	refresh_button.pressed.emit()
 
 #endregion
