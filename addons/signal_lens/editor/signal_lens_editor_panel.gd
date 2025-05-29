@@ -75,7 +75,7 @@ func _ready() -> void:
 	pin_checkbox.icon = EditorInterface.get_base_control().get_theme_icon("Pin", "EditorIcons")
 	keep_emissions_checkbox.icon = EditorInterface.get_base_control().get_theme_icon("Override", "EditorIcons")
 	emission_speed_icon.icon = EditorInterface.get_base_control().get_theme_icon("Timer", "EditorIcons")
-	options_button.get_popup().index_pressed.connect(_on_options_index_pressed) # NOTE: ID & index must have same value!
+	options_popup.index_pressed.connect(_on_options_index_pressed) # NOTE: ID & index must have same value!
 
 ## Requests inspection of [param current_node] in remote scene
 func request_node_data():
