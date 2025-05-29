@@ -13,7 +13,7 @@ func _ready() -> void:
 
 ## This callback parses a node's signal data into an array that can be sent to the debugger
 ## The data is packaged in the following structure:
-## Pseudo-code: [Name of target node, [All of the node's signals and each signal's respective callables]]
+## Pseudo-code: [Name of target node, [All of the node's signals and each signal's respective callables], Class of target node]
 ## This request is received in the debugger with an array containing the target node's node path
 ## which will be used to retrieve the target node from the scene
 func _on_node_signal_data_requested(prefix, data) -> bool:
@@ -44,6 +44,9 @@ func _on_node_signal_data_requested(prefix, data) -> bool:
 	# The unique name of the targeted node
 	# This will be used to set the name of the main graph node in the editor panel
 	var target_node_name: String = target_node.name
+	
+	# Get target node class using Object.get_class()
+	var target_node_class: String = target_node.get_class()
 	
 	# Initialize the array that will store the node's signal data
 	var target_node_signal_data: Array
@@ -94,7 +97,7 @@ func _on_node_signal_data_requested(prefix, data) -> bool:
 				target_node.connect(parsed_signal_name, _on_target_node_signal_emitted.bind(target_node_name, parsed_signal_name))
 
 	# On node data ready, prepare the array as per the debugger's specifications
-	EngineDebugger.send_message("signal_lens:incoming_node_signal_data", [target_node_name, target_node_signal_data])
+	EngineDebugger.send_message("signal_lens:incoming_node_signal_data", [target_node_name, target_node_signal_data, target_node_class])
 	return true
 
 

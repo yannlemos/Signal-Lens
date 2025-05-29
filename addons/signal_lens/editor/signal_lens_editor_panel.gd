@@ -23,7 +23,8 @@ enum Direction {LEFT, RIGHT}
 
 ## This enum keeps available option IDs
 enum Options {
-	HIDE_SIGNALS_WITHOUT_CONNECTIONS
+	HIDE_SIGNALS_WITHOUT_CONNECTIONS,
+	HIDE_BUILT_IN_SIGNALS,
 }
 
 ## Emitted on user pressed "refresh" button
@@ -50,6 +51,7 @@ var pulsing_connections: Array = []
 ## Value of options
 var settings: Dictionary = {
 	Options.HIDE_SIGNALS_WITHOUT_CONNECTIONS: true,
+	Options.HIDE_BUILT_IN_SIGNALS: false,
 }
 
 # Scene references
@@ -154,8 +156,8 @@ func clear_graph():
 
 ## Draws data received from the runtime autoload
 ## The data is packages in the following structure:
-## Pseudo-code: [Name of target node, [All of the node's signals and each signal's respective callables]]
-## Print result: [{&"name_of_targeted_node", [{"signal": "item_rect_changed", "callables": [{ "object_name": &"Control", "callable_method": "Control::_size_changed"}]]
+## Pseudo-code: [Name of target node, [All of the node's signals and each signal's respective callables], Class of target node]
+## Print result: [{&"name_of_targeted_node", [{"signal": "item_rect_changed", "callables": [{ "object_name": &"Control", "callable_method": "Control::_size_changed"}], "Control"]
 ## Is is parsed and drawin into nodes, with connections established between signals and their callables
 func draw_node_data(data: Array):
 	# If lock button toggled on, don't draw incoming data
@@ -195,6 +197,14 @@ func draw_node_data(data: Array):
 	for signal_data in target_node_signal_data:
 		# Check signal connections and skip not connected signals (based on settings)
 		if settings[Options.HIDE_SIGNALS_WITHOUT_CONNECTIONS] and signal_data["callables"].size() == 0: continue
+		
+		# Check signal connections and skip if signal is built-in (based on settings)
+		if settings[Options.HIDE_BUILT_IN_SIGNALS]:
+			var class_signals: Array = []
+			for class_signal in ClassDB.class_get_signal_list(data[2]):
+				class_signals.append(class_signal["name"])
+			if signal_data["signal"] in class_signals:
+				continue
 		
 		# Get the color based on the index so we can have the rainbow vibes
 		var slot_color = get_slot_color(current_signal_index, target_node_signal_data.size())
