@@ -140,7 +140,7 @@ func _on_target_node_signal_emitted(node_name, signal_name):
 		"datetime": get_current_datetime_string(),
 		"timestamp": get_engine_ticks_string()
 	}
-	
+	print(emission_data)
 	
 	EngineDebugger.send_message("signal_lens:incoming_node_signal_emission", [emission_data])
 

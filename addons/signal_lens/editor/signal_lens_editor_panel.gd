@@ -44,6 +44,7 @@ var pulsing_connections: Array = []
 
 # Scene references
 @export var graph_edit: GraphEdit 
+@export var logger_button: Button
 @export var node_path_line_edit: LineEdit 
 @export var refresh_button: Button 
 @export var clear_button: Button
@@ -62,6 +63,7 @@ func _ready() -> void:
 	pin_checkbox.icon = EditorInterface.get_base_control().get_theme_icon("Pin", "EditorIcons")
 	keep_emissions_checkbox.icon = EditorInterface.get_base_control().get_theme_icon("Override", "EditorIcons")
 	emission_speed_icon.icon = EditorInterface.get_base_control().get_theme_icon("Timer", "EditorIcons")
+	logger_button.icon = EditorInterface.get_base_control().get_theme_icon("FileList", "EditorIcons")
 
 ## Requests inspection of [param current_node] in remote scene
 func request_node_data():
