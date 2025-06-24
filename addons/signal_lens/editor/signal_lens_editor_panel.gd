@@ -54,6 +54,7 @@ var pulsing_connections: Array = []
 @export var keep_emissions_checkbox: CheckButton
 @export var emission_speed_slider: Slider
 @export var emission_speed_icon: Button
+@export var logger: Control
 
 ## Initialize panel: Load icons
 func _ready() -> void:
@@ -412,5 +413,8 @@ func _on_keep_emissions_checkbox_toggled(toggled_on: bool) -> void:
 		keep_signal_emissions()
 	else:
 		dont_keep_signal_emissions()
+
+func _on_logger_button_toggled(toggled_on: bool) -> void:
+	logger.visible = toggled_on
 
 #endregion
