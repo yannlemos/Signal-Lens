@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cicwkklbx7x1m"]
 
-[ext_resource type="Script" path="res://addons/signal_lens/editor/signal_lens_graph_node.gd" id="1_p48ar"]
+[ext_resource type="Script" uid="uid://dibsrsyq5uw81" path="res://addons/signal_lens/editor/signal_lens_graph_node.gd" id="1_p48ar"]
 
 [node name="SignalLensGraphNode" type="GraphNode"]
 offset_left = 358.0

@@ -267,7 +267,7 @@ func draw_signal_emission(data: Array):
 	# Avoid trying to draw signal emission if graph not fully drawn yet
 	if graph_edit.get_child_count() <= 1: return
 	var target_node: GraphNode = graph_edit.get_child(1)
-	var port_index = get_port_index_from_signal_name(data[1])
+	var port_index = get_port_index_from_signal_name(data[0]["signal_name"])
 	if port_index == -1: return
 	for connection in graph_edit.get_connection_list():
 		if connection["from_node"] == target_node.name && connection["from_port"] == port_index:
@@ -319,8 +319,6 @@ func dont_keep_signal_emissions():
 #endregion
 
 #region Panel Resizing
-
-
 
 # Reference to the Split Container that holds the bottom panel in the editor
 var _editor_dock

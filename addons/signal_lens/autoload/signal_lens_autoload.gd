@@ -92,7 +92,7 @@ func _on_node_signal_data_requested(prefix, data) -> bool:
 				target_node.connect(parsed_signal_name, _on_target_node_signal_emitted.bind(target_node_name, parsed_signal_name).unbind(signal_args.size()))
 			else:
 				target_node.connect(parsed_signal_name, _on_target_node_signal_emitted.bind(target_node_name, parsed_signal_name))
-
+	
 	# On node data ready, prepare the array as per the debugger's specifications
 	EngineDebugger.send_message("signal_lens:incoming_node_signal_data", [target_node_name, target_node_signal_data])
 	return true
@@ -133,4 +133,31 @@ func parse_signal_callables_to_debugger_format(raw_signal_connections):
 ## This callable received all signal emissions from the currently targeted node
 ## and sends them to the editor panel
 func _on_target_node_signal_emitted(node_name, signal_name):
-	EngineDebugger.send_message("signal_lens:incoming_node_signal_emission", [node_name, signal_name])
+
+	var emission_data: Dictionary = {
+		"node_name": node_name,
+		"signal_name": signal_name,
+		"datetime": get_current_datetime_string(),
+		"timestamp": get_engine_ticks_string()
+	}
+	
+	
+	EngineDebugger.send_message("signal_lens:incoming_node_signal_emission", [emission_data])
+
+func get_current_datetime_string() -> String:
+	return Time.get_datetime_string_from_system()
+
+func get_engine_ticks_string() -> String:
+	var ticks: int = Time.get_ticks_msec()
+	
+	# Convert milliseconds to total seconds
+	var total_seconds = ticks / 1000
+	var milliseconds = ticks % 1000
+	
+	# Calculate hours, minutes, and seconds
+	var hours = total_seconds / 3600
+	var minutes = (total_seconds % 3600) / 60
+	var seconds = total_seconds % 60
+	
+	# Format with leading zeros
+	return "%02d:%02d:%02d:%03d" % [hours, minutes, seconds, milliseconds]

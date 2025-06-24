@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://ds8cfe4b5j2x6"]
 
-[ext_resource type="Script" path="res://addons/signal_lens/test_scene/signal_lens_test_scene.gd" id="1_3ongb"]
+[ext_resource type="Script" uid="uid://dqa2qee7m1lb0" path="res://addons/signal_lens/test_scene/signal_lens_test_scene.gd" id="1_3ongb"]
 
 [node name="SignalLensTestScene" type="Control"]
 layout_mode = 3
