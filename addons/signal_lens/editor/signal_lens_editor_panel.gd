@@ -268,7 +268,7 @@ func clean_connection_activity():
 #region Signal Emission Rendering
 
 func draw_signal_emission(data: Array):
-	logger.create_log(data[0]["datetime"], data[0]["timestamp"], data[0]["node_name"], data[0]["signal_name"])
+	logger.create_log(data[0]["datetime"], data[0]["timestamp"], data[0]["node_name"], data[0]["signal_name"], data[0]["signal_arguments"])
 	# Avoid trying to draw signal emission if graph not fully drawn yet
 	if graph_edit.get_child_count() <= 1: return
 	var target_node: GraphNode = graph_edit.get_child(1)

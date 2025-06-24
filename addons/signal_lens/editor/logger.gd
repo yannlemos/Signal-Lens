@@ -27,21 +27,23 @@ func clear():
 		child.queue_free()
 	counter_label.text = ""
 
-func create_log(datetime: String, timestamp: String, node_name: String, signal_name: String):
+func create_log(datetime: String, timestamp: String, node_name: String, signal_name: String, signal_arguments: Array):
 	var raw_log = "%s | %s\n%s → %s" % [datetime, timestamp, node_name, signal_name]
+	if not signal_arguments.is_empty(): raw_log += "\n" + str(signal_arguments)
 	_logs.append(raw_log)
 	
 	var pretty_log: String = ""
 	
 	pretty_log += "[font_size=12]"
-	pretty_log += "[color=WEB_GRAY] %s | %s [/color] \n" % [datetime, timestamp]
-	pretty_log += "[color=WHITE] %s → %s" % [node_name, signal_name]
+	pretty_log += "[color=WEB_GRAY]%s | %s[/color]\n" % [datetime, timestamp]
+	pretty_log += "[color=WHITE][b]%s → %s[/b]" % [node_name, signal_name]
+	if not signal_arguments.is_empty(): pretty_log += "\n[color=WHITE]" + str(signal_arguments)
 	
 	var log_label: RichTextLabel = RichTextLabel.new()
 	log_label.bbcode_enabled = true
 	log_label.fit_content = true
 	log_label.selection_enabled = true
-	log_label.add_theme_constant_override("line_separation", 2)
+	log_label.add_theme_constant_override("line_separation", 5)
 	log_label.context_menu_enabled = true
 	log_label.text = pretty_log
 	log_label.add_theme_stylebox_override("background", StyleBoxEmpty.new())

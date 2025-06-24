@@ -341,6 +341,7 @@ modulate = Color(0.501407, 0.501406, 0.501406, 1)
 layout_mode = 2
 size_flags_horizontal = 3
 label_settings = SubResource("LabelSettings_v6bl3")
+horizontal_alignment = 2
 
 [node name="CopyButton" type="Button" parent="EditorPanel/Logger/VSplitContainer/HSplitContainer/Panel/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
@@ -368,7 +369,7 @@ size_flags_vertical = 3
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_constants/separation = 10
+theme_override_constants/separation = 13
 
 [node name="Control" type="Control" parent="EditorPanel/Logger/VSplitContainer/HSplitContainer"]
 layout_mode = 2

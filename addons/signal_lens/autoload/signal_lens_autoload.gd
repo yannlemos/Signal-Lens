@@ -89,7 +89,7 @@ func _on_node_signal_data_requested(prefix, data) -> bool:
 		if not target_node.is_connected(parsed_signal_name, _on_target_node_signal_emitted):
 			var signal_args: Array = raw_signal_data["args"]
 			if signal_args.size() > 0:
-				target_node.connect(parsed_signal_name, _on_target_node_signal_emitted.bind(target_node_name, parsed_signal_name).unbind(signal_args.size()))
+				target_node.connect(parsed_signal_name, _on_target_node_signal_emitted.bind(target_node_name, parsed_signal_name, signal_args).unbind(signal_args.size()))
 			else:
 				target_node.connect(parsed_signal_name, _on_target_node_signal_emitted.bind(target_node_name, parsed_signal_name))
 	
@@ -132,13 +132,14 @@ func parse_signal_callables_to_debugger_format(raw_signal_connections):
 
 ## This callable received all signal emissions from the currently targeted node
 ## and sends them to the editor panel
-func _on_target_node_signal_emitted(node_name, signal_name):
+func _on_target_node_signal_emitted(node_name, signal_name, signal_arguments = []):
 
 	var emission_data: Dictionary = {
 		"node_name": node_name,
 		"signal_name": signal_name,
 		"datetime": get_current_datetime_string(),
-		"timestamp": get_engine_ticks_string()
+		"timestamp": get_engine_ticks_string(),
+		"signal_arguments": signal_arguments
 	}
 	print(emission_data)
 	
