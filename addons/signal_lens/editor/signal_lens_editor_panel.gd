@@ -152,6 +152,7 @@ func draw_node_data(data: Array):
 	
 	# Clear graph to avoid drawing over old data
 	clear_graph()
+	logger.clear()
 	
 	# This line is super important to avoid random rendering errors
 	# It seems we need to give a small breathing room for the graph edit
@@ -267,6 +268,7 @@ func clean_connection_activity():
 #region Signal Emission Rendering
 
 func draw_signal_emission(data: Array):
+	logger.create_log(data[0]["datetime"], data[0]["timestamp"], data[0]["node_name"], data[0]["signal_name"])
 	# Avoid trying to draw signal emission if graph not fully drawn yet
 	if graph_edit.get_child_count() <= 1: return
 	var target_node: GraphNode = graph_edit.get_child(1)

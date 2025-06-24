@@ -77,7 +77,7 @@ data = {
 image = SubResource("Image_c4iiw")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v6bl3"]
-bg_color = Color(0, 0, 0, 0.21)
+bg_color = Color(0.0177324, 0.0177324, 0.0177324, 0.497)
 corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
@@ -273,7 +273,7 @@ icon_alignment = 1
 vertical_icon_alignment = 2
 expand_icon = true
 
-[node name="Logger" type="MarginContainer" parent="EditorPanel" node_paths=PackedStringArray("log_container", "copy_button", "clear_button", "v_split_container", "h_split_container")]
+[node name="Logger" type="MarginContainer" parent="EditorPanel" node_paths=PackedStringArray("log_container", "copy_button", "clear_button", "v_split_container", "h_split_container", "log_scroll", "counter_label")]
 visible = false
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
@@ -287,6 +287,8 @@ copy_button = NodePath("VSplitContainer/HSplitContainer/Panel/PanelContainer/Mar
 clear_button = NodePath("VSplitContainer/HSplitContainer/Panel/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/ClearButton")
 v_split_container = NodePath("VSplitContainer")
 h_split_container = NodePath("VSplitContainer/HSplitContainer")
+log_scroll = NodePath("VSplitContainer/HSplitContainer/Panel/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer")
+counter_label = NodePath("VSplitContainer/HSplitContainer/Panel/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/CounterLabel")
 
 [node name="VSplitContainer" type="VSplitContainer" parent="EditorPanel/Logger"]
 layout_mode = 2
@@ -328,10 +330,16 @@ layout_mode = 2
 [node name="HBoxContainer" type="HBoxContainer" parent="EditorPanel/Logger/VSplitContainer/HSplitContainer/Panel/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="EditorPanel/Logger/VSplitContainer/HSplitContainer/Panel/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="TitleLabel" type="Label" parent="EditorPanel/Logger/VSplitContainer/HSplitContainer/Panel/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Signal Log"
+label_settings = SubResource("LabelSettings_v6bl3")
+
+[node name="CounterLabel" type="Label" parent="EditorPanel/Logger/VSplitContainer/HSplitContainer/Panel/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+modulate = Color(0.501407, 0.501406, 0.501406, 1)
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Signal Log"
 label_settings = SubResource("LabelSettings_v6bl3")
 
 [node name="CopyButton" type="Button" parent="EditorPanel/Logger/VSplitContainer/HSplitContainer/Panel/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
@@ -360,7 +368,7 @@ size_flags_vertical = 3
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_constants/separation = 5
+theme_override_constants/separation = 10
 
 [node name="Control" type="Control" parent="EditorPanel/Logger/VSplitContainer/HSplitContainer"]
 layout_mode = 2
@@ -376,5 +384,6 @@ size_flags_horizontal = 8
 [connection signal="toggled" from="EditorPanel/MainButtonsContainer/HBoxContainer2/KeepEmissionsCheckbox" to="." method="_on_keep_emissions_checkbox_toggled"]
 [connection signal="value_changed" from="EditorPanel/MainButtonsContainer/HBoxContainer2/EmissionSpeedContainer/EmissionSpeedSlider" to="." method="_on_emission_speed_slider_value_changed"]
 [connection signal="pressed" from="EditorPanel/RepoButtonContainer/RepoButton" to="." method="_on_repo_button_pressed"]
-[connection signal="visibility_changed" from="EditorPanel/Logger" to="EditorPanel/Logger" method="_on_visibility_changed"]
 [connection signal="dragged" from="EditorPanel/Logger/VSplitContainer/HSplitContainer" to="EditorPanel/Logger" method="_on_h_split_container_dragged"]
+[connection signal="pressed" from="EditorPanel/Logger/VSplitContainer/HSplitContainer/Panel/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/CopyButton" to="EditorPanel/Logger" method="_on_copy_button_pressed"]
+[connection signal="pressed" from="EditorPanel/Logger/VSplitContainer/HSplitContainer/Panel/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/ClearButton" to="EditorPanel/Logger" method="_on_clear_button_pressed"]
