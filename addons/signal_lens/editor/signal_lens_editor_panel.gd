@@ -224,7 +224,7 @@ func draw_node_data(data: Array):
 						graph_edit.add_child(target_callables_node)
 						target_callables_node.position_offset += Vector2(250, 0)
 					else:
-						target_callables_node = get_node(target_node_name + " (Callables)")
+						target_callables_node = graph_edit.get_node(target_node_name + " (Callables)")
 					create_button_slot(callable_method, target_callables_node, Direction.LEFT, slot_color)
 					graph_edit.connect_node(target_node.name, current_signal_index, target_callables_node.name, target_callables_node.get_child_count() - 1)
 				else:
@@ -384,7 +384,6 @@ func _on_visibility_changed() -> void:
 		_resize_panel(-ProjectSettings.get_setting("addons/Signal Lens/height_to_resize_to"))
 	else:  
 		_resize_panel(_original_panel_size)
-
 
 #endregion
 
