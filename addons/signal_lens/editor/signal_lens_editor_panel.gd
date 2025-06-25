@@ -367,7 +367,6 @@ func _on_visibility_changed() -> void:
 	else:  
 		_resize_panel(_original_panel_size)
 
-
 #endregion
 
 #region Signal Callbacks
