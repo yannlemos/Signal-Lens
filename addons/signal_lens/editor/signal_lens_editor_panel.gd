@@ -234,7 +234,7 @@ func draw_node_data(data: Array):
 						graph_edit.add_child(target_callables_node)
 						target_callables_node.position_offset += Vector2(250, 0)
 					else:
-						target_callables_node = get_node(target_node_name + " (Callables)")
+						target_callables_node = graph_edit.get_node(target_node_name + " (Callables)")
 					create_button_slot(callable_method, target_callables_node, Direction.LEFT, slot_color)
 					graph_edit.connect_node(target_node.name, current_signal_index, target_callables_node.name, target_callables_node.get_child_count() - 1)
 				else:
@@ -395,7 +395,6 @@ func _on_visibility_changed() -> void:
 	else:  
 		_resize_panel(_original_panel_size)
 
-
 #endregion
 
 #region Signal Callbacks
@@ -445,5 +444,6 @@ func _on_options_index_pressed(option_index: int) -> void:
 	if options_popup.is_item_checkable(option_index):
 		settings[option_index] = not options_popup.is_item_checked(option_index) # Change state
 		options_popup.set_item_checked(option_index, settings[option_index]) # Apply state
+	refresh_button.pressed.emit()
 
 #endregion
