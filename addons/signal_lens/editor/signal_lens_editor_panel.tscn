@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://f4ie0ytcicf0"]
+[gd_scene load_steps=15 format=3 uid="uid://f4ie0ytcicf0"]
 
 [ext_resource type="Script" path="res://addons/signal_lens/editor/signal_lens_editor_panel.gd" id="1_abwge"]
 [ext_resource type="Texture2D" uid="uid://brdnqivcfnsun" path="res://addons/signal_lens/icons/icon_logo.png" id="6_wrl4d"]
@@ -15,6 +15,7 @@ script = ExtResource("1_abwge")
 graph_edit = NodePath("EditorPanel/GraphEdit")
 node_path_line_edit = NodePath("EditorPanel/MainButtonsContainer/HBoxContainer2/NodePathLineEdit")
 refresh_button = NodePath("EditorPanel/MainButtonsContainer/HBoxContainer2/RefreshButton")
+options_button = NodePath("EditorPanel/MainButtonsContainer/HBoxContainer2/OptionsButton")
 clear_button = NodePath("EditorPanel/MainButtonsContainer/HBoxContainer2/ClearButton")
 inactive_text = NodePath("EditorPanel/InactiveTextContainer/InactiveText")
 warning_text = NodePath("EditorPanel/WarningTextContainer/WarningText")
@@ -50,6 +51,16 @@ theme_override_constants/margin_bottom = 15
 [node name="HBoxContainer2" type="HBoxContainer" parent="EditorPanel/MainButtonsContainer"]
 layout_mode = 2
 theme_override_constants/separation = 10
+
+[node name="OptionsButton" type="MenuButton" parent="EditorPanel/MainButtonsContainer/HBoxContainer2"]
+layout_mode = 2
+tooltip_text = "Options Button
+See & Change options."
+icon = SubResource("ImageTexture_cmxsg")
+item_count = 1
+popup/item_0/text = "Hide signals without connections"
+popup/item_0/checkable = 1
+popup/item_0/checked = true
 
 [node name="ClearButton" type="Button" parent="EditorPanel/MainButtonsContainer/HBoxContainer2"]
 layout_mode = 2
