@@ -48,6 +48,7 @@ var pulsing_connections: Array = []
 @export var refresh_button: Button 
 @export var clear_button: Button
 @export var inactive_text: Label
+@export var warning_text: Label
 @export var pin_checkbox: CheckButton 
 @export var keep_emissions_checkbox: CheckButton
 @export var emission_speed_slider: Slider
@@ -55,6 +56,7 @@ var pulsing_connections: Array = []
 
 ## Initialize panel: Load icons
 func _ready() -> void:
+	_get_parent_editor_split()
 	clear_button.icon = EditorInterface.get_base_control().get_theme_icon("Clear", "EditorIcons")
 	refresh_button.icon = EditorInterface.get_base_control().get_theme_icon("Reload", "EditorIcons")
 	pin_checkbox.icon = EditorInterface.get_base_control().get_theme_icon("Pin", "EditorIcons")
@@ -80,6 +82,7 @@ func start_session():
 	node_path_line_edit.placeholder_text = TUTORIAL_TEXT
 	inactive_text.hide()
 
+
 ## Cleans up editor on project stop
 func stop_session():
 	clear_graph()
@@ -93,6 +96,9 @@ func stop_session():
 	pin_checkbox.button_pressed = false
 	keep_emissions_checkbox.button_pressed = false
 	inactive_text.show()
+	warning_text.hide()
+	warning_text.text = ""
+
 
 ## Assigns a [param target_node] to internal member [param current_node]
 func assign_node_path(target_node: NodePath):
@@ -152,6 +158,14 @@ func draw_node_data(data: Array):
 	
 	# Retrieve the targeted node from the data array, which is always index 0
 	var target_node_name = data[0]
+	
+	# Handle root node inspection edge case
+	if target_node_name == "Root":
+		warning_text.show()
+		warning_text.text = "Root node inspection is not supported."
+		return
+	else:
+		warning_text.hide()
 
 	# Retrieve the targeted node signal data, which is always index 1
 	var target_node_signal_data: Array = data[1]
@@ -250,13 +264,14 @@ func clean_connection_activity():
 #region Signal Emission Rendering
 
 func draw_signal_emission(data: Array):
+	# Avoid trying to draw signal emission if graph not fully drawn yet
+	if graph_edit.get_child_count() <= 1: return
 	var target_node: GraphNode = graph_edit.get_child(1)
 	var port_index = get_port_index_from_signal_name(data[1])
 	if port_index == -1: return
 	for connection in graph_edit.get_connection_list():
 		if connection["from_node"] == target_node.name && connection["from_port"] == port_index:
 			pulse_connection(connection)
-
 
 
 func pulse_connection(connection: Dictionary) -> void:
@@ -300,6 +315,57 @@ func dont_keep_signal_emissions():
 	for connection in pulsing_connections:
 		fade_out_connection(connection)
 	keep_emissions = false
+
+#endregion
+
+#region Panel Resizing
+
+
+
+# Reference to the Split Container that holds the bottom panel in the editor
+var _editor_dock
+
+# split_offset value of editor dock, works as a size for the panel
+# Important: the value is negative because of split_offset's implementation
+var _original_panel_size: float
+
+## Grabs a reference to the parent split container of the debugger
+func _get_parent_editor_split():
+	var base = EditorInterface.get_base_control()
+	var waiting := base.get_children()
+	while not waiting.is_empty():
+		var node := waiting.pop_back() as Node
+		if node.name.find("DockVSplitCenter") >= 0:
+			_editor_dock = node
+			_original_panel_size = _editor_dock.split_offset
+			if visible:
+				_resize_panel(-ProjectSettings.get_setting("addons/Signal Lens/height_to_resize_to"))
+			else:
+				_resize_panel(0)
+		else:
+			waiting.append_array(node.get_children())
+
+## Resizes panel to new_size if possible
+func _resize_panel(new_size: float):
+	if _can_resize_panel():
+		_editor_dock.split_offset = new_size
+
+
+func _can_resize_panel() -> bool:
+	# If user wants to resize panel on open
+	if not ProjectSettings.get_setting("addons/Signal Lens/resize_panel_on_open"): return false
+	
+	# If editor dock reference has been acquired
+	if not _editor_dock: return false
+	return true
+
+
+func _on_visibility_changed() -> void:
+	# Only resize bottom panel if both visible and visible in editor
+	if visible and is_visible_in_tree():
+		_resize_panel(-ProjectSettings.get_setting("addons/Signal Lens/height_to_resize_to"))
+	else:  
+		_resize_panel(_original_panel_size)
 
 #endregion
 
