@@ -27,7 +27,7 @@ func clear():
 		child.queue_free()
 	counter_label.text = ""
 
-func create_log(datetime: String, timestamp: String, node_name: String, signal_name: String, signal_arguments: Array):
+func create_log(datetime: String, timestamp: String, node_name: String, signal_name: String, signal_arguments: Array, process_frames: int, physics_frames: int):
 	var raw_log = "%s | %s\n%s → %s" % [datetime, timestamp, node_name, signal_name]
 	if not signal_arguments.is_empty(): raw_log += "\n" + str(signal_arguments)
 	_logs.append(raw_log)
@@ -35,9 +35,9 @@ func create_log(datetime: String, timestamp: String, node_name: String, signal_n
 	var pretty_log: String = ""
 	
 	pretty_log += "[font_size=12]"
-	pretty_log += "[color=WEB_GRAY]%s | %s[/color]\n" % [datetime, timestamp]
-	pretty_log += "[color=WHITE][b]%s → %s[/b]" % [node_name, signal_name]
-	if not signal_arguments.is_empty(): pretty_log += "\n[color=WHITE]" + str(signal_arguments)
+	pretty_log += "[color=WEB_GRAY]%s | %s[br]Process: %s | Physics: %s[/color][br]" % [datetime, timestamp, process_frames, physics_frames]
+	pretty_log += "[font_size=13][color=WHITE][b]%s → %s[/b][br]" % [node_name, signal_name]
+	if not signal_arguments.is_empty(): pretty_log += "[color=WHITE]" + str(signal_arguments)
 	
 	var log_label: RichTextLabel = RichTextLabel.new()
 	log_label.bbcode_enabled = true

@@ -73,6 +73,7 @@ func _on_node_signal_data_requested(prefix, data) -> bool:
 		# [signal] is a reference to the Signal;
 		# [callable] is a reference to the connected Callable;
 		# [flags] is a combination of ConnectFlags.
+		
 		var parsed_signal_callables = parse_signal_callables_to_debugger_format(raw_signal_connections)
 		
 		# Create debugger-friendly signal data dictionary
@@ -87,11 +88,12 @@ func _on_node_signal_data_requested(prefix, data) -> bool:
 		# Connect this autoload's signal emission capture callable to currently iterated signal
 		# so we can send signal emissions to the editor panel
 		if not target_node.is_connected(parsed_signal_name, _on_target_node_signal_emitted):
-			var signal_args: Array = raw_signal_data["args"]
-			if signal_args.size() > 0:
-				target_node.connect(parsed_signal_name, _on_target_node_signal_emitted.bind(target_node_name, parsed_signal_name, signal_args).unbind(signal_args.size()))
-			else:
-				target_node.connect(parsed_signal_name, _on_target_node_signal_emitted.bind(target_node_name, parsed_signal_name))
+			#raw_signal_connections[]
+			#var signal_args: Array = raw_signal_data["args"]
+			#if signal_args.size() > 0:
+				#target_node.connect(parsed_signal_name, _on_target_node_signal_emitted.bind(target_node_name, parsed_signal_name, signal_args))
+			#else:
+			target_node.connect(parsed_signal_name, _on_target_node_signal_emitted.bind(target_node_name, parsed_signal_name))
 	
 	# On node data ready, prepare the array as per the debugger's specifications
 	EngineDebugger.send_message("signal_lens:incoming_node_signal_data", [target_node_name, target_node_signal_data])
@@ -132,16 +134,24 @@ func parse_signal_callables_to_debugger_format(raw_signal_connections):
 
 ## This callable received all signal emissions from the currently targeted node
 ## and sends them to the editor panel
-func _on_target_node_signal_emitted(node_name, signal_name, signal_arguments = []):
-
+func _on_target_node_signal_emitted(...args: Array):
+	
+	var parsed_args: Array
+	var signal_args = args.slice(0, args.size() - 2)
+	for arg in signal_args:
+		parsed_args.append(str(arg))
+	
 	var emission_data: Dictionary = {
-		"node_name": node_name,
-		"signal_name": signal_name,
+		"node_name": args[args.size() - 2],
+		"signal_name": args[args.size() - 1],
 		"datetime": get_current_datetime_string(),
 		"timestamp": get_engine_ticks_string(),
-		"signal_arguments": signal_arguments
+		"process_frames": Engine.get_process_frames(),
+		"physics_frames": Engine.get_physics_frames(),
+		"signal_arguments": parsed_args
 	}
-	print(emission_data)
+	
+	prints("Before debugger:", emission_data)
 	
 	EngineDebugger.send_message("signal_lens:incoming_node_signal_emission", [emission_data])
 
