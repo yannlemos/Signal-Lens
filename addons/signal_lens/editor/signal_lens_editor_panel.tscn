@@ -260,6 +260,7 @@ vertical_icon_alignment = 2
 expand_icon = true
 
 [node name="Logger" type="MarginContainer" parent="EditorPanel" node_paths=PackedStringArray("log_container", "copy_button", "clear_button", "v_split_container", "h_split_container", "log_scroll", "counter_label")]
+visible = false
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 size_flags_horizontal = 0
@@ -277,15 +278,17 @@ counter_label = NodePath("VSplitContainer/HSplitContainer/Panel/PanelContainer/M
 
 [node name="VSplitContainer" type="VSplitContainer" parent="EditorPanel/Logger"]
 layout_mode = 2
+mouse_filter = 2
 drag_area_margin_end = 130
 
 [node name="Control" type="Control" parent="EditorPanel/Logger/VSplitContainer"]
 layout_mode = 2
-size_flags_vertical = 3
+mouse_filter = 2
 
 [node name="HSplitContainer" type="HSplitContainer" parent="EditorPanel/Logger/VSplitContainer"]
 layout_mode = 2
 size_flags_vertical = 3
+mouse_filter = 2
 split_offset = -130
 
 [node name="Panel" type="MarginContainer" parent="EditorPanel/Logger/VSplitContainer/HSplitContainer"]
@@ -358,7 +361,7 @@ theme_override_constants/separation = 13
 
 [node name="Control" type="Control" parent="EditorPanel/Logger/VSplitContainer/HSplitContainer"]
 layout_mode = 2
-size_flags_horizontal = 8
+mouse_filter = 2
 
 [connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
 [connection signal="node_deselected" from="EditorPanel/GraphEdit" to="." method="_on_graph_edit_node_deselected"]

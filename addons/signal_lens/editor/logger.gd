@@ -70,8 +70,6 @@ func _on_copy_button_pressed() -> void:
 	DisplayServer.clipboard_set(result)
 
 
-var _last_offset: int = 0
-
 func _on_h_split_container_dragged(offset: int) -> void:
 	var h_split_offset_progress = inverse_lerp(_starting_h_split_offset, 0, offset)
 	var new_v_split_drag_area = lerp(_starting_v_split_margin_end, 0, h_split_offset_progress)

@@ -88,11 +88,6 @@ func _on_node_signal_data_requested(prefix, data) -> bool:
 		# Connect this autoload's signal emission capture callable to currently iterated signal
 		# so we can send signal emissions to the editor panel
 		if not target_node.is_connected(parsed_signal_name, _on_target_node_signal_emitted):
-			#raw_signal_connections[]
-			#var signal_args: Array = raw_signal_data["args"]
-			#if signal_args.size() > 0:
-				#target_node.connect(parsed_signal_name, _on_target_node_signal_emitted.bind(target_node_name, parsed_signal_name, signal_args))
-			#else:
 			target_node.connect(parsed_signal_name, _on_target_node_signal_emitted.bind(target_node_name, parsed_signal_name))
 	
 	# On node data ready, prepare the array as per the debugger's specifications
@@ -132,7 +127,7 @@ func parse_signal_callables_to_debugger_format(raw_signal_connections):
 	return parsed_signal_callables
 
 
-## This callable received all signal emissions from the currently targeted node
+## This callable receives all signal emissions from the currently targeted node
 ## and sends them to the editor panel
 func _on_target_node_signal_emitted(...args: Array):
 	
@@ -150,8 +145,6 @@ func _on_target_node_signal_emitted(...args: Array):
 		"physics_frames": Engine.get_physics_frames(),
 		"signal_arguments": parsed_args
 	}
-	
-	prints("Before debugger:", emission_data)
 	
 	EngineDebugger.send_message("signal_lens:incoming_node_signal_emission", [emission_data])
 
