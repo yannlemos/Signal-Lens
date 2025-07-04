@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://dwepw5abso8f1" path="res://addons/signal_lens/editor/signal_lens_editor_panel.gd" id="1_abwge"]
 [ext_resource type="PackedScene" uid="uid://bps1tpcpa1fj2" path="res://addons/signal_lens/editor/signal_lens_logger.tscn" id="3_v6bl3"]
-[ext_resource type="Texture2D" uid="uid://brdnqivcfnsun" path="res://addons/signal_lens/icons/icon_logo.png" id="6_wrl4d"]
 
 [sub_resource type="SVGTexture" id="SVGTexture_fhx01"]
 _source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#e0e0e0\" d=\"M8 0a2 2 0 0 0 0 4 2 2 0 0 0 0-4zm0 6a2 2 0 0 0 0 4 2 2 0 0 0 0-4zm0 6a2 2 0 0 0 0 4 2 2 0 0 0 0-4z\"/></svg>
@@ -84,6 +83,16 @@ Color(0.37254903, 1, 0.5921569, 1): Color(0.45, 0.95, 0.5, 1),
 Color(1, 0.8666667, 0.39607844, 1): Color(1, 0.87, 0.4, 1)
 }
 
+[sub_resource type="SVGTexture" id="SVGTexture_5afs0"]
+_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#e0e0e0\" d=\"m5 9 5.5-5.5L8 1h7v7l-2.5-2.5L7 11zm7 6H4a3 3 0 0 1-3-3V4a3 3 0 0 1 3-3h2a1 1 0 0 1 0 2H4a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-2a1 1 0 0 1 2 0v2a3 3 0 0 1-3 3z\"/></svg>
+"
+saturation = 2.0
+color_map = {
+Color(1, 0.37254903, 0.37254903, 1): Color(1, 0.47, 0.42, 1),
+Color(0.37254903, 1, 0.5921569, 1): Color(0.45, 0.95, 0.5, 1),
+Color(1, 0.8666667, 0.39607844, 1): Color(1, 0.87, 0.4, 1)
+}
+
 [node name="Signal Lens" type="Control" node_paths=PackedStringArray("graph_edit", "logger_button", "node_path_line_edit", "refresh_button", "options_button", "clear_button", "inactive_text", "warning_text", "pin_checkbox", "keep_emissions_checkbox", "emission_speed_slider", "emission_speed_icon", "connection_opacity_icon", "logger")]
 layout_mode = 3
 anchors_preset = 15
@@ -91,6 +100,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 script = ExtResource("1_abwge")
 graph_edit = NodePath("EditorPanel/GraphEdit")
 logger_button = NodePath("EditorPanel/MainButtonsContainer/HBoxContainer2/LoggerButton")
@@ -208,7 +219,6 @@ disabled = true
 icon = SubResource("SVGTexture_4h13t")
 
 [node name="LineEdit" type="LineEdit" parent="EditorPanel/MainButtonsContainer/HBoxContainer2"]
-custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 0
@@ -271,26 +281,18 @@ max_value = 1.0
 step = 0.01000000000931322
 value = 0.30000000019208517
 
-[node name="RepoButtonContainer" type="MarginContainer" parent="EditorPanel/MainButtonsContainer/HBoxContainer2"]
+[node name="RepoButton" type="Button" parent="EditorPanel/MainButtonsContainer/HBoxContainer2"]
+modulate = Color(1, 0.37254903, 0.37254903, 1)
 layout_mode = 2
+size_flags_horizontal = 0
 size_flags_vertical = 0
-mouse_filter = 2
-theme_override_constants/margin_left = -2
-
-[node name="RepoButton" type="Button" parent="EditorPanel/MainButtonsContainer/HBoxContainer2/RepoButtonContainer"]
-texture_filter = 4
-custom_minimum_size = Vector2(145.04, 35)
-layout_mode = 2
-size_flags_horizontal = 8
-tooltip_text = "Click to access the plugin's repository on Github.
-Submit issues, consult documentation and contribute!"
-icon = ExtResource("6_wrl4d")
+tooltip_text = "Clear Button
+Clear the graph."
+icon = SubResource("SVGTexture_5afs0")
 flat = true
-icon_alignment = 1
-vertical_icon_alignment = 2
-expand_icon = true
 
 [node name="Logger" parent="EditorPanel" instance=ExtResource("3_v6bl3")]
+visible = false
 layout_mode = 2
 theme_override_constants/margin_top = 55
 theme_override_constants/margin_bottom = 55
@@ -338,4 +340,3 @@ size_flags_vertical = 8
 [connection signal="toggled" from="EditorPanel/MainButtonsContainer/HBoxContainer2/KeepEmissionsCheckbox" to="." method="_on_keep_emissions_checkbox_toggled"]
 [connection signal="value_changed" from="EditorPanel/MainButtonsContainer/HBoxContainer2/EmissionSpeedContainer/EmissionSpeedSlider" to="." method="_on_emission_speed_slider_value_changed"]
 [connection signal="value_changed" from="EditorPanel/MainButtonsContainer/HBoxContainer2/ConnectionOpacityContainer/ConnectionOpacitySlider" to="." method="_on_connection_opacity_slider_value_changed"]
-[connection signal="pressed" from="EditorPanel/MainButtonsContainer/HBoxContainer2/RepoButtonContainer/RepoButton" to="." method="_on_repo_button_pressed"]

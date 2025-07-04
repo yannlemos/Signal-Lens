@@ -90,7 +90,10 @@ func _ready() -> void:
 	#graph_edit.get_menu_hbox().custom_minimum_size.x = graph_edit.size.x
 	graph_edit.get_menu_hbox().reparent(panel_container)
 	graph_edit.get_menu_hbox().hide()
+	repo_button.icon = EditorInterface.get_base_control().get_theme_icon("ExternalLink", "EditorIcons")
 	
+@onready var repo_button: Button = $EditorPanel/MainButtonsContainer/HBoxContainer2/RepoButton
+
 @onready var panel_container: PanelContainer = $EditorPanel/PanelContainer
 @onready var main_buttons_container: MarginContainer = $EditorPanel/MainButtonsContainer
 
