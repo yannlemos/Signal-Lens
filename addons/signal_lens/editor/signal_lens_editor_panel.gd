@@ -44,6 +44,8 @@ var keep_emissions: bool = false
 ## Acquired from slider in scene
 var emission_speed_multiplier: float = 1.0
 
+var connection_opacity: float = DEFAULT_CONNECTION_OPACITY
+
 ## Array that collects active pulse connections so that they can be
 ## all cleanup together when unfreezing emissions
 var pulsing_connections: Array = []
@@ -68,6 +70,7 @@ var settings: Dictionary = {
 @export var keep_emissions_checkbox: CheckButton
 @export var emission_speed_slider: Slider
 @export var emission_speed_icon: Button
+@export var connection_opacity_icon: Button
 @export var logger: Control
 
 ## Initialize panel: Load icons
@@ -81,6 +84,15 @@ func _ready() -> void:
 	emission_speed_icon.icon = EditorInterface.get_base_control().get_theme_icon("Timer", "EditorIcons")
 	logger_button.icon = EditorInterface.get_base_control().get_theme_icon("FileList", "EditorIcons")
 	options_popup.index_pressed.connect(_on_options_index_pressed) # NOTE: ID & index must have same value!
+	connection_opacity_icon.icon = EditorInterface.get_base_control().get_theme_icon("GuiVisibilityVisible", "EditorIcons")
+	#main_buttons_container.reparent(graph_edit.get_menu_hbox())
+	#graph_edit.get_menu_hbox().move_child(main_buttons_container, 0)
+	#graph_edit.get_menu_hbox().custom_minimum_size.x = graph_edit.size.x
+	graph_edit.get_menu_hbox().reparent(panel_container)
+	graph_edit.get_menu_hbox().hide()
+	
+@onready var panel_container: PanelContainer = $EditorPanel/PanelContainer
+@onready var main_buttons_container: MarginContainer = $EditorPanel/MainButtonsContainer
 
 ## Requests inspection of [param current_node] in remote scene
 func request_node_data():
@@ -286,7 +298,7 @@ func create_button_slot(button_text: String, parent_node: GraphNode, slot_direct
 
 func get_slot_color(slot_index, signal_amount) -> Color:
 	var hue = float(slot_index) / float(signal_amount) 
-	return Color.from_hsv(hue, 1.0, 0.5, DEFAULT_CONNECTION_OPACITY)  
+	return Color.from_hsv(hue, 1.0, 0.5, connection_opacity)  
 
 func clean_connection_activity():
 	for connection in graph_edit.get_connection_list():
@@ -504,5 +516,8 @@ func _on_options_index_pressed(option_index: int) -> void:
 	else:
 		_open_project_settings()
 	refresh_button.pressed.emit()
+
+func _on_connection_opacity_slider_value_changed(value: float) -> void:
+	connection_opacity = value
 
 #endregion

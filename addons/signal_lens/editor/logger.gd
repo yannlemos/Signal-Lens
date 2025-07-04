@@ -4,6 +4,7 @@ extends Control
 @export var log_container: Control
 @export var copy_button: Button
 @export var clear_button: Button
+@export var options_button: Button
 @export var v_split_container: VSplitContainer
 @export var h_split_container: HSplitContainer
 @export var log_scroll: ScrollContainer
@@ -17,6 +18,7 @@ var _starting_h_split_offset: int
 func _ready() -> void:
 	copy_button.icon = EditorInterface.get_base_control().get_theme_icon("ActionCopy", "EditorIcons")
 	clear_button.icon = EditorInterface.get_base_control().get_theme_icon("Clear", "EditorIcons")
+	options_button.icon = EditorInterface.get_base_control().get_theme_icon("GuiTabMenuHl", "EditorIcons")
 	_starting_v_split_margin_end = v_split_container.drag_area_margin_end
 	_starting_h_split_offset = h_split_container.split_offset
 	counter_label.text = ""
