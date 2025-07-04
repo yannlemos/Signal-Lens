@@ -1,20 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://f4ie0ytcicf0"]
+[gd_scene load_steps=12 format=3 uid="uid://f4ie0ytcicf0"]
 
 [ext_resource type="Script" uid="uid://dwepw5abso8f1" path="res://addons/signal_lens/editor/signal_lens_editor_panel.gd" id="1_abwge"]
+[ext_resource type="PackedScene" uid="uid://bps1tpcpa1fj2" path="res://addons/signal_lens/editor/signal_lens_logger.tscn" id="3_v6bl3"]
 [ext_resource type="Texture2D" uid="uid://brdnqivcfnsun" path="res://addons/signal_lens/icons/icon_logo.png" id="6_wrl4d"]
 
 [sub_resource type="SVGTexture" id="SVGTexture_fhx01"]
 _source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#e0e0e0\" d=\"M8 0a2 2 0 0 0 0 4 2 2 0 0 0 0-4zm0 6a2 2 0 0 0 0 4 2 2 0 0 0 0-4zm0 6a2 2 0 0 0 0 4 2 2 0 0 0 0-4z\"/></svg>
-"
-saturation = 2.0
-color_map = {
-Color(1, 0.37254903, 0.37254903, 1): Color(1, 0.47, 0.42, 1),
-Color(0.37254903, 1, 0.5921569, 1): Color(0.45, 0.95, 0.5, 1),
-Color(1, 0.8666667, 0.39607844, 1): Color(1, 0.87, 0.4, 1)
-}
-
-[sub_resource type="SVGTexture" id="SVGTexture_v6bl3"]
-_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#e0e0e0\" d=\"m2 2v2h2v-2zm4 0v2h8v-2zm-4 5v2h2v-2zm4 0v2h8v-2zm-4 5v2h2v-2zm4 0v2h8v-2z\"/></svg>
 "
 saturation = 2.0
 color_map = {
@@ -30,9 +21,19 @@ content_margin_right = 0.0
 content_margin_bottom = 4.0
 color = Color(0.5, 0.5, 0.5, 1)
 grow_begin = -3.0
-grow_end = -3.0
+grow_end = -11.0
 thickness = 2
 vertical = true
+
+[sub_resource type="SVGTexture" id="SVGTexture_v6bl3"]
+_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#e0e0e0\" d=\"m2 2v2h2v-2zm4 0v2h8v-2zm-4 5v2h2v-2zm4 0v2h8v-2zm-4 5v2h2v-2zm4 0v2h8v-2z\"/></svg>
+"
+saturation = 2.0
+color_map = {
+Color(1, 0.37254903, 0.37254903, 1): Color(1, 0.47, 0.42, 1),
+Color(0.37254903, 1, 0.5921569, 1): Color(0.45, 0.95, 0.5, 1),
+Color(1, 0.8666667, 0.39607844, 1): Color(1, 0.87, 0.4, 1)
+}
 
 [sub_resource type="SVGTexture" id="SVGTexture_kqale"]
 _source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#e0e0e0\" d=\"M5 8a4 4 0 1 1 4 4v2a6 6 0 1 0-6-6H1l3 4 3-4z\"/></svg>
@@ -84,7 +85,7 @@ Color(0.37254903, 1, 0.5921569, 1): Color(0.45, 0.95, 0.5, 1),
 Color(1, 0.8666667, 0.39607844, 1): Color(1, 0.87, 0.4, 1)
 }
 
-[node name="Signal Lens" type="Control" node_paths=PackedStringArray("graph_edit", "logger_button", "node_path_line_edit", "refresh_button", "options_button", "clear_button", "inactive_text", "warning_text", "pin_checkbox", "keep_emissions_checkbox", "emission_speed_slider", "emission_speed_icon")]
+[node name="Signal Lens" type="Control" node_paths=PackedStringArray("graph_edit", "logger_button", "node_path_line_edit", "refresh_button", "options_button", "clear_button", "inactive_text", "warning_text", "pin_checkbox", "keep_emissions_checkbox", "emission_speed_slider", "emission_speed_icon", "logger")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -94,18 +95,20 @@ grow_vertical = 2
 script = ExtResource("1_abwge")
 graph_edit = NodePath("EditorPanel/GraphEdit")
 logger_button = NodePath("EditorPanel/MainButtonsContainer/HBoxContainer2/LoggerButton")
-node_path_line_edit = NodePath("EditorPanel/MainButtonsContainer/HBoxContainer2/NodePathLineEdit")
+node_path_line_edit = NodePath("EditorPanel/MainButtonsContainer/HBoxContainer2/LineEdit")
 refresh_button = NodePath("EditorPanel/MainButtonsContainer/HBoxContainer2/RefreshButton")
 options_button = NodePath("EditorPanel/MainButtonsContainer/HBoxContainer2/OptionsButton")
 clear_button = NodePath("EditorPanel/MainButtonsContainer/HBoxContainer2/ClearButton")
 inactive_text = NodePath("EditorPanel/InactiveTextContainer/InactiveText")
 warning_text = NodePath("EditorPanel/WarningTextContainer/WarningText")
 pin_checkbox = NodePath("EditorPanel/MainButtonsContainer/HBoxContainer2/PinCheckbox")
-keep_emissions_checkbox = NodePath("EditorPanel/MainButtonsContainer/HBoxContainer2/KeepEmissionsCheckbox")
-emission_speed_slider = NodePath("EditorPanel/MainButtonsContainer/HBoxContainer2/EmissionSpeedContainer/EmissionSpeedSlider")
-emission_speed_icon = NodePath("EditorPanel/MainButtonsContainer/HBoxContainer2/EmissionSpeedContainer/EmissionSpeedIcon")
+keep_emissions_checkbox = NodePath("EditorPanel/MainButtonsContainer2/HBoxContainer2/KeepEmissionsCheckbox")
+emission_speed_slider = NodePath("EditorPanel/MainButtonsContainer2/HBoxContainer2/EmissionSpeedContainer/EmissionSpeedSlider")
+emission_speed_icon = NodePath("EditorPanel/MainButtonsContainer2/HBoxContainer2/EmissionSpeedContainer/EmissionSpeedIcon")
+logger = NodePath("EditorPanel/Logger")
 
 [node name="EditorPanel" type="PanelContainer" parent="."]
+self_modulate = Color(1, 1, 1, 0)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -115,30 +118,41 @@ grow_vertical = 2
 
 [node name="GraphEdit" type="GraphEdit" parent="EditorPanel"]
 layout_mode = 2
+scroll_offset = Vector2(960, 540)
 grid_pattern = 1
 connection_lines_thickness = 3.0
-zoom = 0.3
+zoom = 0.8
+minimap_enabled = false
 minimap_size = Vector2(120, 80)
-show_zoom_label = true
+show_menu = false
+show_zoom_buttons = false
 show_grid_buttons = false
+show_minimap_button = false
+show_arrange_button = false
 
 [node name="MainButtonsContainer" type="MarginContainer" parent="EditorPanel"]
 layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 8
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_bottom = 15
+size_flags_vertical = 0
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="EditorPanel/MainButtonsContainer"]
 layout_mode = 2
+size_flags_vertical = 0
 theme_override_constants/separation = 10
 
 [node name="OptionsButton" type="MenuButton" parent="EditorPanel/MainButtonsContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(0, 28)
 layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
 tooltip_text = "Options Button
 See & Change options."
 icon = SubResource("SVGTexture_fhx01")
-item_count = 2
+icon_alignment = 1
+item_count = 3
 popup/item_0/text = "Hide signals without connections"
 popup/item_0/checkable = 1
 popup/item_0/checked = true
@@ -146,12 +160,8 @@ popup/item_0/id = 0
 popup/item_1/text = "Hide built-in signals"
 popup/item_1/checkable = 1
 popup/item_1/id = 1
-
-[node name="LoggerButton" type="Button" parent="EditorPanel/MainButtonsContainer/HBoxContainer2"]
-layout_mode = 2
-tooltip_text = "Clear Button
-Clear the graph."
-icon = SubResource("SVGTexture_v6bl3")
+popup/item_2/text = "More settings..."
+popup/item_2/id = 2
 
 [node name="VSeparator" type="VSeparator" parent="EditorPanel/MainButtonsContainer/HBoxContainer2"]
 visible = false
@@ -159,8 +169,18 @@ layout_mode = 2
 theme_override_constants/separation = 6
 theme_override_styles/separator = SubResource("StyleBoxLine_fhx01")
 
+[node name="LoggerButton" type="Button" parent="EditorPanel/MainButtonsContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 0
+tooltip_text = "Clear Button
+Clear the graph."
+toggle_mode = true
+icon = SubResource("SVGTexture_v6bl3")
+
 [node name="RefreshButton" type="Button" parent="EditorPanel/MainButtonsContainer/HBoxContainer2"]
 layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
 tooltip_text = "Refresh Button
 Redraw the graph."
 disabled = true
@@ -168,6 +188,8 @@ icon = SubResource("SVGTexture_kqale")
 
 [node name="ClearButton" type="Button" parent="EditorPanel/MainButtonsContainer/HBoxContainer2"]
 layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
 tooltip_text = "Clear Button
 Clear the graph."
 disabled = true
@@ -175,25 +197,54 @@ icon = SubResource("SVGTexture_qib1m")
 
 [node name="PinCheckbox" type="CheckButton" parent="EditorPanel/MainButtonsContainer/HBoxContainer2"]
 layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
 tooltip_text = "Pin This Node
 If toggled on, ignores any new selections made in the remote scene."
 disabled = true
 icon = SubResource("SVGTexture_4h13t")
 
-[node name="NodePathLineEdit" type="LineEdit" parent="EditorPanel/MainButtonsContainer/HBoxContainer2"]
-custom_minimum_size = Vector2(250, 0)
+[node name="LineEdit" type="LineEdit" parent="EditorPanel/MainButtonsContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
-tooltip_text = "Node Path
-Node path for the node that is currently selected in the remote scene."
-text = "/root"
+size_flags_horizontal = 3
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 14
+placeholder_text = "/root"
 editable = false
-virtual_keyboard_enabled = false
-middle_mouse_paste_enabled = false
-deselect_on_focus_loss_enabled = false
-drag_and_drop_selection_enabled = false
 select_all_on_focus = true
 
-[node name="KeepEmissionsCheckbox" type="CheckButton" parent="EditorPanel/MainButtonsContainer/HBoxContainer2"]
+[node name="RepoButtonContainer" type="MarginContainer" parent="EditorPanel/MainButtonsContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 0
+mouse_filter = 2
+
+[node name="RepoButton" type="Button" parent="EditorPanel/MainButtonsContainer/HBoxContainer2/RepoButtonContainer"]
+texture_filter = 4
+custom_minimum_size = Vector2(145.04, 35)
+layout_mode = 2
+size_flags_horizontal = 8
+tooltip_text = "Click to access the plugin's repository on Github.
+Submit issues, consult documentation and contribute!"
+icon = ExtResource("6_wrl4d")
+flat = true
+icon_alignment = 1
+vertical_icon_alignment = 2
+expand_icon = true
+
+[node name="MainButtonsContainer2" type="MarginContainer" parent="EditorPanel"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_bottom = 15
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="EditorPanel/MainButtonsContainer2"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="KeepEmissionsCheckbox" type="CheckButton" parent="EditorPanel/MainButtonsContainer2/HBoxContainer2"]
+visible = false
 layout_mode = 2
 tooltip_text = "Keep emissions
 If toggled on, keeps any received signal emissions drawn in the graph.
@@ -201,21 +252,48 @@ When toggled off, drawn signal emissions will fade out."
 disabled = true
 icon = SubResource("SVGTexture_vbdfx")
 
-[node name="EmissionSpeedContainer" type="HBoxContainer" parent="EditorPanel/MainButtonsContainer/HBoxContainer2"]
+[node name="EmissionSpeedContainer" type="HBoxContainer" parent="EditorPanel/MainButtonsContainer2/HBoxContainer2"]
+visible = false
 layout_mode = 2
-tooltip_text = "Emission Speed
+tooltip_text = "Emission Duration
 Controls the speed of the fade out of signal emissions.
-Left means means quick, right means long."
+Left means means quick, right means slow."
+theme_override_constants/separation = 4
 
-[node name="EmissionSpeedIcon" type="Button" parent="EditorPanel/MainButtonsContainer/HBoxContainer2/EmissionSpeedContainer"]
+[node name="EmissionSpeedIcon" type="Button" parent="EditorPanel/MainButtonsContainer2/HBoxContainer2/EmissionSpeedContainer"]
 layout_mode = 2
 mouse_filter = 2
 disabled = true
 icon = SubResource("SVGTexture_dyx7v")
 flat = true
 
-[node name="EmissionSpeedSlider" type="HSlider" parent="EditorPanel/MainButtonsContainer/HBoxContainer2/EmissionSpeedContainer"]
-custom_minimum_size = Vector2(100, 0)
+[node name="EmissionSpeedSlider" type="HSlider" parent="EditorPanel/MainButtonsContainer2/HBoxContainer2/EmissionSpeedContainer"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+size_flags_vertical = 1
+min_value = 0.3
+max_value = 6.0
+step = 0.1
+value = 1.0
+editable = false
+
+[node name="EmissionSpeedContainer2" type="HBoxContainer" parent="EditorPanel/MainButtonsContainer2/HBoxContainer2"]
+visible = false
+layout_mode = 2
+tooltip_text = "Emission Duration
+Controls the speed of the fade out of signal emissions.
+Left means means quick, right means slow."
+theme_override_constants/separation = 4
+
+[node name="EmissionSpeedIcon" type="Button" parent="EditorPanel/MainButtonsContainer2/HBoxContainer2/EmissionSpeedContainer2"]
+layout_mode = 2
+mouse_filter = 2
+disabled = true
+icon = SubResource("SVGTexture_dyx7v")
+flat = true
+
+[node name="EmissionSpeedSlider" type="HSlider" parent="EditorPanel/MainButtonsContainer2/HBoxContainer2/EmissionSpeedContainer2"]
+custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 size_flags_vertical = 1
 min_value = 0.3
@@ -253,25 +331,8 @@ size_flags_horizontal = 4
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="RepoButtonContainer" type="MarginContainer" parent="EditorPanel"]
+[node name="Logger" parent="EditorPanel" instance=ExtResource("3_v6bl3")]
 layout_mode = 2
-size_flags_horizontal = 8
-size_flags_vertical = 0
-mouse_filter = 2
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 15
-
-[node name="RepoButton" type="Button" parent="EditorPanel/RepoButtonContainer"]
-texture_filter = 4
-custom_minimum_size = Vector2(145.04, 40)
-layout_mode = 2
-tooltip_text = "Click to access the plugin's repository on Github.
-Submit issues, consult documentation and contribute!"
-icon = ExtResource("6_wrl4d")
-flat = true
-icon_alignment = 1
-vertical_icon_alignment = 2
-expand_icon = true
 
 [connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
 [connection signal="node_deselected" from="EditorPanel/GraphEdit" to="." method="_on_graph_edit_node_deselected"]
@@ -280,6 +341,7 @@ expand_icon = true
 [connection signal="pressed" from="EditorPanel/MainButtonsContainer/HBoxContainer2/RefreshButton" to="." method="_on_refresh_button_pressed"]
 [connection signal="pressed" from="EditorPanel/MainButtonsContainer/HBoxContainer2/ClearButton" to="." method="_on_clear_button_pressed"]
 [connection signal="toggled" from="EditorPanel/MainButtonsContainer/HBoxContainer2/PinCheckbox" to="." method="_on_pin_checkbox_toggled"]
-[connection signal="toggled" from="EditorPanel/MainButtonsContainer/HBoxContainer2/KeepEmissionsCheckbox" to="." method="_on_keep_emissions_checkbox_toggled"]
-[connection signal="value_changed" from="EditorPanel/MainButtonsContainer/HBoxContainer2/EmissionSpeedContainer/EmissionSpeedSlider" to="." method="_on_emission_speed_slider_value_changed"]
-[connection signal="pressed" from="EditorPanel/RepoButtonContainer/RepoButton" to="." method="_on_repo_button_pressed"]
+[connection signal="pressed" from="EditorPanel/MainButtonsContainer/HBoxContainer2/RepoButtonContainer/RepoButton" to="." method="_on_repo_button_pressed"]
+[connection signal="toggled" from="EditorPanel/MainButtonsContainer2/HBoxContainer2/KeepEmissionsCheckbox" to="." method="_on_keep_emissions_checkbox_toggled"]
+[connection signal="value_changed" from="EditorPanel/MainButtonsContainer2/HBoxContainer2/EmissionSpeedContainer/EmissionSpeedSlider" to="." method="_on_emission_speed_slider_value_changed"]
+[connection signal="value_changed" from="EditorPanel/MainButtonsContainer2/HBoxContainer2/EmissionSpeedContainer2/EmissionSpeedSlider" to="." method="_on_emission_speed_slider_value_changed"]

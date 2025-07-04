@@ -98,7 +98,7 @@ func start_session():
 	keep_emissions_checkbox.button_pressed = false
 	emission_speed_slider.editable = true
 	emission_speed_icon.disabled = false
-	node_path_line_edit.placeholder_text = TUTORIAL_TEXT
+	node_path_line_edit.text = TUTORIAL_TEXT
 	inactive_text.hide()
 
 
@@ -132,6 +132,7 @@ func assign_node_path(target_node: NodePath):
 	
 	# Update line edit
 	node_path_line_edit.text = current_node
+	node_path_line_edit.caret_column = node_path_line_edit.text.length()
 
 #region Graph Rendering
 
@@ -153,9 +154,9 @@ func clear_graph():
 		# so let's ignore it and move on
 		if child.name == "_connection_layer": continue
 		child.free()
-	# Necessary for the minimap to update, it seems
-	graph_edit.minimap_enabled = false
-	graph_edit.minimap_enabled = true
+	## Necessary for the minimap to update, it seems
+	#graph_edit.minimap_enabled = false
+	#graph_edit.minimap_enabled = true
 
 ## Draws data received from the runtime autoload
 ## The data is packages in the following structure:
@@ -398,6 +399,55 @@ func _on_visibility_changed() -> void:
 	else:  
 		_resize_panel(_original_panel_size)
 
+func _open_project_settings():
+	var base = EditorInterface.get_base_control()
+
+	# Find the Project Settings Editor
+	var settings = base.find_child('*ProjectSettingsEditor*', true, false)
+	if not settings:
+		print('ProjectSettingsEditor not found (?)')
+		return
+
+	# Grab the tab container from the sectioned editor
+	var tab_container = settings.find_child('*TabContainer*', true, false)
+	if not tab_container is TabContainer:
+		print('Could not find the tab container')
+		return
+
+	# Set the current tab to General
+	tab_container.current_tab = 0
+
+	# Find the Sectioned Editor inside it
+	var sectioned_inspector = tab_container.find_child('*SectionedInspector*', true, false)
+	if not sectioned_inspector:
+		print('SectionedInspector not found (?)')
+		return
+
+	# Find the Tree inside it
+	var tree = sectioned_inspector.find_child("Tree", true, false) as Tree
+	if not tree:
+		print('Could not find Tree')
+		return
+
+	# Find the entry in the tree
+	var found_item = null
+	var item = tree.get_root()
+	while item:
+		item = item.get_next_visible()
+		if not item:
+			print('--finished')
+			break
+		if item.get_text(0) == "Signal Lens":
+			found_item = item
+			break
+
+	# Select the found item
+	if found_item:
+		tree.set_selected(found_item, 0)
+		tree.ensure_cursor_is_visible()
+
+	# Finally popup the Project Settings Editor
+	settings.popup()
 
 #endregion
 
@@ -451,6 +501,8 @@ func _on_options_index_pressed(option_index: int) -> void:
 	if options_popup.is_item_checkable(option_index):
 		settings[option_index] = not options_popup.is_item_checked(option_index) # Change state
 		options_popup.set_item_checked(option_index, settings[option_index]) # Apply state
+	else:
+		_open_project_settings()
 	refresh_button.pressed.emit()
 
 #endregion
