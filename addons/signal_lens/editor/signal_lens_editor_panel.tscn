@@ -1,18 +1,7 @@
-[gd_scene load_steps=14 format=3 uid="uid://f4ie0ytcicf0"]
+[gd_scene load_steps=8 format=3 uid="uid://f4ie0ytcicf0"]
 
 [ext_resource type="Script" uid="uid://dwepw5abso8f1" path="res://addons/signal_lens/editor/signal_lens_editor_panel.gd" id="1_abwge"]
-[ext_resource type="Script" uid="uid://dpn0ev0370mga" path="res://addons/signal_lens/editor/logger.gd" id="3_v6bl3"]
 [ext_resource type="Texture2D" uid="uid://brdnqivcfnsun" path="res://addons/signal_lens/icons/icon_logo.png" id="6_wrl4d"]
-
-[sub_resource type="SVGTexture" id="SVGTexture_v6bl3"]
-_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#e0e0e0\" d=\"m2 2v2h2v-2zm4 0v2h8v-2zm-4 5v2h2v-2zm4 0v2h8v-2zm-4 5v2h2v-2zm4 0v2h8v-2z\"/></svg>
-"
-saturation = 2.0
-color_map = {
-Color(1, 0.37254903, 0.37254903, 1): Color(1, 0.47, 0.42, 1),
-Color(0.37254903, 1, 0.5921569, 1): Color(0.45, 0.95, 0.5, 1),
-Color(1, 0.8666667, 0.39607844, 1): Color(1, 0.87, 0.4, 1)
-}
 
 [sub_resource type="SVGTexture" id="SVGTexture_qib1m"]
 _source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#e0e0e0\" d=\"m8 1a1 1 0 0 0 -1 1v5h-2c-1.108 0-2 .892-2 2v1h10v-1c0-1.108-.892-2-2-2h-2v-5a1 1 0 0 0 -1-1zm-5 10v4l10-1v-3z\"/></svg>
@@ -64,29 +53,6 @@ Color(0.37254903, 1, 0.5921569, 1): Color(0.45, 0.95, 0.5, 1),
 Color(1, 0.8666667, 0.39607844, 1): Color(1, 0.87, 0.4, 1)
 }
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_v6bl3"]
-bg_color = Color(0.0177324, 0.0177324, 0.0177324, 0.497)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-
-[sub_resource type="LabelSettings" id="LabelSettings_v6bl3"]
-font_size = 13
-
-[sub_resource type="SVGTexture" id="SVGTexture_c4iiw"]
-_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#e0e0e0\" d=\"M2 1a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h1V3h9V2a1 1 0 0 0-1-1zm3 3a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h9a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1zm1 2h7v7H6z\"/></svg>
-"
-saturation = 2.0
-color_map = {
-Color(1, 0.37254903, 0.37254903, 1): Color(1, 0.47, 0.42, 1),
-Color(0.37254903, 1, 0.5921569, 1): Color(0.45, 0.95, 0.5, 1),
-Color(1, 0.8666667, 0.39607844, 1): Color(1, 0.87, 0.4, 1)
-}
-
-[sub_resource type="StyleBoxLine" id="StyleBoxLine_v6bl3"]
-color = Color(0.244776, 0.244776, 0.244776, 1)
-
 [node name="Signal Lens" type="Control" node_paths=PackedStringArray("graph_edit", "logger_button", "node_path_line_edit", "refresh_button", "clear_button", "inactive_text", "warning_text", "pin_checkbox", "keep_emissions_checkbox", "emission_speed_slider", "emission_speed_icon", "logger")]
 layout_mode = 3
 anchors_preset = 15
@@ -96,7 +62,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_abwge")
 graph_edit = NodePath("EditorPanel/GraphEdit")
-logger_button = NodePath("EditorPanel/MainButtonsContainer/HBoxContainer2/LoggerButton")
+logger_button = NodePath("")
 node_path_line_edit = NodePath("EditorPanel/MainButtonsContainer/HBoxContainer2/NodePathLineEdit")
 refresh_button = NodePath("EditorPanel/MainButtonsContainer/HBoxContainer2/RefreshButton")
 clear_button = NodePath("EditorPanel/MainButtonsContainer/HBoxContainer2/ClearButton")
@@ -106,7 +72,7 @@ pin_checkbox = NodePath("EditorPanel/MainButtonsContainer/HBoxContainer2/PinChec
 keep_emissions_checkbox = NodePath("EditorPanel/MainButtonsContainer/HBoxContainer2/KeepEmissionsCheckbox")
 emission_speed_slider = NodePath("EditorPanel/MainButtonsContainer/HBoxContainer2/EmissionSpeedContainer/EmissionSpeedSlider")
 emission_speed_icon = NodePath("EditorPanel/MainButtonsContainer/HBoxContainer2/EmissionSpeedContainer/EmissionSpeedIcon")
-logger = NodePath("EditorPanel/Logger")
+logger = NodePath("")
 
 [node name="EditorPanel" type="PanelContainer" parent="."]
 layout_mode = 1
@@ -135,15 +101,6 @@ theme_override_constants/margin_bottom = 15
 [node name="HBoxContainer2" type="HBoxContainer" parent="EditorPanel/MainButtonsContainer"]
 layout_mode = 2
 theme_override_constants/separation = 10
-
-[node name="LoggerButton" type="Button" parent="EditorPanel/MainButtonsContainer/HBoxContainer2"]
-custom_minimum_size = Vector2(20, 0)
-layout_mode = 2
-toggle_mode = true
-icon = SubResource("SVGTexture_v6bl3")
-
-[node name="VSeparator" type="VSeparator" parent="EditorPanel/MainButtonsContainer/HBoxContainer2"]
-layout_mode = 2
 
 [node name="ClearButton" type="Button" parent="EditorPanel/MainButtonsContainer/HBoxContainer2"]
 layout_mode = 2
@@ -259,120 +216,12 @@ icon_alignment = 1
 vertical_icon_alignment = 2
 expand_icon = true
 
-[node name="Logger" type="MarginContainer" parent="EditorPanel" node_paths=PackedStringArray("log_container", "copy_button", "clear_button", "v_split_container", "h_split_container", "log_scroll", "counter_label")]
-visible = false
-custom_minimum_size = Vector2(400, 0)
-layout_mode = 2
-size_flags_horizontal = 0
-mouse_filter = 2
-theme_override_constants/margin_top = 55
-theme_override_constants/margin_bottom = 55
-script = ExtResource("3_v6bl3")
-log_container = NodePath("VSplitContainer/HSplitContainer/Panel/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer/LogContainer")
-copy_button = NodePath("VSplitContainer/HSplitContainer/Panel/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/CopyButton")
-clear_button = NodePath("VSplitContainer/HSplitContainer/Panel/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/ClearButton")
-v_split_container = NodePath("VSplitContainer")
-h_split_container = NodePath("VSplitContainer/HSplitContainer")
-log_scroll = NodePath("VSplitContainer/HSplitContainer/Panel/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer")
-counter_label = NodePath("VSplitContainer/HSplitContainer/Panel/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/CounterLabel")
-
-[node name="VSplitContainer" type="VSplitContainer" parent="EditorPanel/Logger"]
-layout_mode = 2
-mouse_filter = 2
-drag_area_margin_end = 130
-
-[node name="Control" type="Control" parent="EditorPanel/Logger/VSplitContainer"]
-layout_mode = 2
-mouse_filter = 2
-
-[node name="HSplitContainer" type="HSplitContainer" parent="EditorPanel/Logger/VSplitContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-mouse_filter = 2
-split_offset = -130
-
-[node name="Panel" type="MarginContainer" parent="EditorPanel/Logger/VSplitContainer/HSplitContainer"]
-custom_minimum_size = Vector2(260, 150)
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 5
-theme_override_constants/margin_bottom = 5
-
-[node name="PanelContainer" type="PanelContainer" parent="EditorPanel/Logger/VSplitContainer/HSplitContainer/Panel"]
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_v6bl3")
-
-[node name="MarginContainer" type="MarginContainer" parent="EditorPanel/Logger/VSplitContainer/HSplitContainer/Panel/PanelContainer"]
-layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
-
-[node name="VBoxContainer" type="VBoxContainer" parent="EditorPanel/Logger/VSplitContainer/HSplitContainer/Panel/PanelContainer/MarginContainer"]
-layout_mode = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="EditorPanel/Logger/VSplitContainer/HSplitContainer/Panel/PanelContainer/MarginContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="TitleLabel" type="Label" parent="EditorPanel/Logger/VSplitContainer/HSplitContainer/Panel/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 0
-text = "Signal Log"
-label_settings = SubResource("LabelSettings_v6bl3")
-
-[node name="CounterLabel" type="Label" parent="EditorPanel/Logger/VSplitContainer/HSplitContainer/Panel/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
-modulate = Color(0.501407, 0.501406, 0.501406, 1)
-layout_mode = 2
-size_flags_horizontal = 3
-label_settings = SubResource("LabelSettings_v6bl3")
-horizontal_alignment = 2
-
-[node name="CopyButton" type="Button" parent="EditorPanel/Logger/VSplitContainer/HSplitContainer/Panel/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-icon = SubResource("SVGTexture_c4iiw")
-flat = true
-
-[node name="ClearButton" type="Button" parent="EditorPanel/Logger/VSplitContainer/HSplitContainer/Panel/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-icon = SubResource("SVGTexture_qib1m")
-flat = true
-
-[node name="HSeparator" type="HSeparator" parent="EditorPanel/Logger/VSplitContainer/HSplitContainer/Panel/PanelContainer/MarginContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_styles/separator = SubResource("StyleBoxLine_v6bl3")
-
-[node name="ScrollContainer" type="ScrollContainer" parent="EditorPanel/Logger/VSplitContainer/HSplitContainer/Panel/PanelContainer/MarginContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="LogContainer" type="VBoxContainer" parent="EditorPanel/Logger/VSplitContainer/HSplitContainer/Panel/PanelContainer/MarginContainer/VBoxContainer/ScrollContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_constants/separation = 13
-
-[node name="Control" type="Control" parent="EditorPanel/Logger/VSplitContainer/HSplitContainer"]
-layout_mode = 2
-mouse_filter = 2
-
 [connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
 [connection signal="node_deselected" from="EditorPanel/GraphEdit" to="." method="_on_graph_edit_node_deselected"]
 [connection signal="node_selected" from="EditorPanel/GraphEdit" to="." method="_on_graph_edit_node_selected"]
-[connection signal="toggled" from="EditorPanel/MainButtonsContainer/HBoxContainer2/LoggerButton" to="." method="_on_logger_button_toggled"]
 [connection signal="pressed" from="EditorPanel/MainButtonsContainer/HBoxContainer2/ClearButton" to="." method="_on_clear_button_pressed"]
 [connection signal="pressed" from="EditorPanel/MainButtonsContainer/HBoxContainer2/RefreshButton" to="." method="_on_refresh_button_pressed"]
 [connection signal="toggled" from="EditorPanel/MainButtonsContainer/HBoxContainer2/PinCheckbox" to="." method="_on_pin_checkbox_toggled"]
 [connection signal="toggled" from="EditorPanel/MainButtonsContainer/HBoxContainer2/KeepEmissionsCheckbox" to="." method="_on_keep_emissions_checkbox_toggled"]
 [connection signal="value_changed" from="EditorPanel/MainButtonsContainer/HBoxContainer2/EmissionSpeedContainer/EmissionSpeedSlider" to="." method="_on_emission_speed_slider_value_changed"]
 [connection signal="pressed" from="EditorPanel/RepoButtonContainer/RepoButton" to="." method="_on_repo_button_pressed"]
-[connection signal="dragged" from="EditorPanel/Logger/VSplitContainer/HSplitContainer" to="EditorPanel/Logger" method="_on_h_split_container_dragged"]
-[connection signal="pressed" from="EditorPanel/Logger/VSplitContainer/HSplitContainer/Panel/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/CopyButton" to="EditorPanel/Logger" method="_on_copy_button_pressed"]
-[connection signal="pressed" from="EditorPanel/Logger/VSplitContainer/HSplitContainer/Panel/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/ClearButton" to="EditorPanel/Logger" method="_on_clear_button_pressed"]
