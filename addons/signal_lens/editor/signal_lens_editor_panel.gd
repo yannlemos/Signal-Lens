@@ -21,6 +21,12 @@ const DEFAULT_CONNECTION_OPACITY: float = 0.3
 ## in a way that provides more legibility in the code
 enum Direction {LEFT, RIGHT}
 
+## This enum keeps available option IDs
+enum Options {
+	HIDE_SIGNALS_WITHOUT_CONNECTIONS,
+	HIDE_BUILT_IN_SIGNALS,
+}
+
 ## Emitted on user pressed "refresh" button
 signal node_data_requested(node_path)
 
@@ -42,15 +48,23 @@ var emission_speed_multiplier: float = 1.0
 ## all cleanup together when unfreezing emissions
 var pulsing_connections: Array = []
 
+## Value of options
+var settings: Dictionary = {
+	Options.HIDE_SIGNALS_WITHOUT_CONNECTIONS: true,
+	Options.HIDE_BUILT_IN_SIGNALS: false,
+}
+
 # Scene references
 @export var graph_edit: GraphEdit 
 @export var logger_button: Button
 @export var node_path_line_edit: LineEdit 
 @export var refresh_button: Button 
+@export var options_button: MenuButton
+@onready var options_popup: PopupMenu = options_button.get_popup()
 @export var clear_button: Button
 @export var inactive_text: Label
 @export var warning_text: Label
-@export var pin_checkbox: CheckButton 
+@export var pin_checkbox: CheckButton
 @export var keep_emissions_checkbox: CheckButton
 @export var emission_speed_slider: Slider
 @export var emission_speed_icon: Button
@@ -59,12 +73,14 @@ var pulsing_connections: Array = []
 ## Initialize panel: Load icons
 func _ready() -> void:
 	_get_parent_editor_split()
+	options_button.icon = EditorInterface.get_base_control().get_theme_icon("GuiTabMenuHl", "EditorIcons")
 	clear_button.icon = EditorInterface.get_base_control().get_theme_icon("Clear", "EditorIcons")
 	refresh_button.icon = EditorInterface.get_base_control().get_theme_icon("Reload", "EditorIcons")
 	pin_checkbox.icon = EditorInterface.get_base_control().get_theme_icon("Pin", "EditorIcons")
 	keep_emissions_checkbox.icon = EditorInterface.get_base_control().get_theme_icon("Override", "EditorIcons")
 	emission_speed_icon.icon = EditorInterface.get_base_control().get_theme_icon("Timer", "EditorIcons")
 	logger_button.icon = EditorInterface.get_base_control().get_theme_icon("FileList", "EditorIcons")
+	options_popup.index_pressed.connect(_on_options_index_pressed) # NOTE: ID & index must have same value!
 
 ## Requests inspection of [param current_node] in remote scene
 func request_node_data():
@@ -143,8 +159,8 @@ func clear_graph():
 
 ## Draws data received from the runtime autoload
 ## The data is packages in the following structure:
-## Pseudo-code: [Name of target node, [All of the node's signals and each signal's respective callables]]
-## Print result: [{&"name_of_targeted_node", [{"signal": "item_rect_changed", "callables": [{ "object_name": &"Control", "callable_method": "Control::_size_changed"}]]
+## Pseudo-code: [Name of target node, [All of the node's signals and each signal's respective callables], Class of target node]
+## Print result: [{&"name_of_targeted_node", [{"signal": "item_rect_changed", "callables": [{ "object_name": &"Control", "callable_method": "Control::_size_changed"}], "Control"]
 ## Is is parsed and drawin into nodes, with connections established between signals and their callables
 func draw_node_data(data: Array):
 	# If lock button toggled on, don't draw incoming data
@@ -183,8 +199,20 @@ func draw_node_data(data: Array):
 	
 	# Start iterating signal by signal
 	for signal_data in target_node_signal_data:
+		# Check signal connections and skip not connected signals (based on settings)
+		if settings[Options.HIDE_SIGNALS_WITHOUT_CONNECTIONS] and signal_data["callables"].size() == 0: continue
+		
+		# Check signal connections and skip if signal is built-in (based on settings)
+		if settings[Options.HIDE_BUILT_IN_SIGNALS]:
+			var class_signals: Array = []
+			for class_signal in ClassDB.class_get_signal_list(data[2]):
+				class_signals.append(class_signal["name"])
+			if signal_data["signal"] in class_signals:
+				continue
+		
 		# Get the color based on the index so we can have the rainbow vibes
 		var slot_color = get_slot_color(current_signal_index, target_node_signal_data.size())
+		
 		# Create the slot button with the signal's name
 		create_button_slot(signal_data["signal"], target_node, Direction.RIGHT, slot_color)
 		
@@ -210,7 +238,7 @@ func draw_node_data(data: Array):
 						graph_edit.add_child(target_callables_node)
 						target_callables_node.position_offset += Vector2(250, 0)
 					else:
-						target_callables_node = get_node(target_node_name + " (Callables)")
+						target_callables_node = graph_edit.get_node(target_node_name + " (Callables)")
 					create_button_slot(callable_method, target_callables_node, Direction.LEFT, slot_color)
 					graph_edit.connect_node(target_node.name, current_signal_index, target_callables_node.name, target_callables_node.get_child_count() - 1)
 				else:
@@ -418,5 +446,11 @@ func _on_keep_emissions_checkbox_toggled(toggled_on: bool) -> void:
 
 func _on_logger_button_toggled(toggled_on: bool) -> void:
 	logger.visible = toggled_on
+	
+func _on_options_index_pressed(option_index: int) -> void:
+	if options_popup.is_item_checkable(option_index):
+		settings[option_index] = not options_popup.is_item_checked(option_index) # Change state
+		options_popup.set_item_checked(option_index, settings[option_index]) # Apply state
+	refresh_button.pressed.emit()
 
 #endregion
