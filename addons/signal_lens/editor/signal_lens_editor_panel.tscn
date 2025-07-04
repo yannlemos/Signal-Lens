@@ -123,6 +123,7 @@ connection_lines_thickness = 3.0
 zoom = 0.8
 minimap_enabled = false
 minimap_size = Vector2(120, 80)
+show_menu = false
 show_zoom_label = true
 show_grid_buttons = false
 show_minimap_button = false
@@ -162,7 +163,6 @@ popup/item_2/id = 5
 popup/item_2/separator = true
 popup/item_3/text = "Show graph toolbar"
 popup/item_3/checkable = 1
-popup/item_3/checked = true
 popup/item_3/id = 3
 popup/item_4/text = "Show minimap"
 popup/item_4/checkable = 1
@@ -291,7 +291,6 @@ vertical_icon_alignment = 2
 expand_icon = true
 
 [node name="Logger" parent="EditorPanel" instance=ExtResource("3_v6bl3")]
-visible = false
 layout_mode = 2
 theme_override_constants/margin_top = 55
 theme_override_constants/margin_bottom = 55
