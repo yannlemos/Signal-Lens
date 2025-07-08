@@ -8,11 +8,15 @@
 
 config_version=5
 
+[addons]
+
+"Signal Lens/height_to_resize_to"=500.0
+
 [application]
 
 config/name="Signal Lens"
 run/main_scene="res://addons/signal_lens/test_scene/signal_lens_test_scene.tscn"
-config/features=PackedStringArray("4.3", "Forward Plus")
+config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.png"
 
 [autoload]

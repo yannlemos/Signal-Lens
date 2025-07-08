@@ -85,8 +85,8 @@ func setup_project_settings():
 	ProjectSettings.add_property_info({
 		"name": setting_height_to_resize_to,
 		"type": TYPE_FLOAT,
-		"hint": TYPE_FLOAT,
-		"hint_string": TYPE_FLOAT
+		"hint": PROPERTY_HINT_RANGE,
+		"hint_string": "200, 900"
 		})
 	ProjectSettings.set_initial_value(setting_height_to_resize_to, 500)
 	ProjectSettings.set_as_basic(setting_height_to_resize_to, true)
