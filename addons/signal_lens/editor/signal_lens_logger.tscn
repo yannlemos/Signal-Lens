@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bps1tpcpa1fj2"]
+[gd_scene load_steps=11 format=3 uid="uid://bps1tpcpa1fj2"]
 
 [ext_resource type="Script" uid="uid://dpn0ev0370mga" path="res://addons/signal_lens/editor/logger.gd" id="1_16bi3"]
 
@@ -21,7 +21,22 @@ corner_radius_bottom_left = 10
 [sub_resource type="LabelSettings" id="LabelSettings_v6bl3"]
 font_size = 13
 
-[sub_resource type="SVGTexture" id="SVGTexture_c4iiw"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_16bi3"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.2629327, 0.2629324, 0.26293245, 0.6)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+corner_detail = 5
+
+[sub_resource type="LabelSettings" id="LabelSettings_tqw23"]
+font_size = 8
+
+[sub_resource type="SVGTexture" id="SVGTexture_5voln"]
 _source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#e0e0e0\" d=\"M2 1a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h1V3h9V2a1 1 0 0 0-1-1zm3 3a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h9a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1zm1 2h7v7H6z\"/></svg>
 "
 saturation = 2.0
@@ -31,7 +46,7 @@ Color(0.37254903, 1, 0.5921569, 1): Color(0.45, 0.95, 0.5, 1),
 Color(1, 0.8666667, 0.39607844, 1): Color(1, 0.87, 0.4, 1)
 }
 
-[sub_resource type="SVGTexture" id="SVGTexture_qib1m"]
+[sub_resource type="SVGTexture" id="SVGTexture_4kas2"]
 _source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#e0e0e0\" d=\"m8 1a1 1 0 0 0 -1 1v5h-2c-1.108 0-2 .892-2 2v1h10v-1c0-1.108-.892-2-2-2h-2v-5a1 1 0 0 0 -1-1zm-5 10v4l10-1v-3z\"/></svg>
 "
 saturation = 2.0
@@ -41,7 +56,7 @@ Color(0.37254903, 1, 0.5921569, 1): Color(0.45, 0.95, 0.5, 1),
 Color(1, 0.8666667, 0.39607844, 1): Color(1, 0.87, 0.4, 1)
 }
 
-[sub_resource type="SVGTexture" id="SVGTexture_fhx01"]
+[sub_resource type="SVGTexture" id="SVGTexture_j505w"]
 _source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#e0e0e0\" d=\"M8 0a2 2 0 0 0 0 4 2 2 0 0 0 0-4zm0 6a2 2 0 0 0 0 4 2 2 0 0 0 0-4zm0 6a2 2 0 0 0 0 4 2 2 0 0 0 0-4z\"/></svg>
 "
 saturation = 2.0
@@ -55,6 +70,7 @@ Color(1, 0.8666667, 0.39607844, 1): Color(1, 0.87, 0.4, 1)
 color = Color(0.244776, 0.244776, 0.244776, 1)
 
 [node name="Logger" type="MarginContainer" node_paths=PackedStringArray("log_container", "copy_button", "clear_button", "options_button", "v_split_container", "h_split_container", "log_scroll", "counter_label")]
+visible = false
 custom_minimum_size = Vector2(400, 0)
 anchors_preset = 9
 anchor_bottom = 1.0
@@ -131,10 +147,37 @@ size_flags_horizontal = 0
 text = "Signal Log"
 label_settings = SubResource("LabelSettings_v6bl3")
 
+[node name="PanelContainer" type="PanelContainer" parent="VSplitContainer/HSplitContainer/Panel/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(10, 9)
+layout_mode = 2
+size_flags_vertical = 4
+tooltip_text = "A log will be recorded based on every signal emitted by the currently selected node in the Scene Tree.
+
+The log consists of: 
+- Engine data at the time of the emission, e.g. current frame, date-time
+- Data emitted by the signal, e.g. signal name, arguments
+
+You can define the logging level in the \":\" button in the upper-right corner.
+- Datetime: Human-friendly date and time at the time of emission, e.g. 2025-07-08T10:27:33
+- Timestamp: Amount of milliseconds passed since the project started running, e.g. 00:00:05:646
+- Process: Current _process frame at the time of emission, e.g. 255 (look for _get_process_frame() in the godot documentation for more info)
+- Physics: Current _physics_process frame at the time of emission, e.g. 567 (look for _get_physics_frame() in the godot documentation for more info)
+
+IMPORTANT: Arguments binded to a signal's callable using bind() or \"Add Extra Call Argument\" in the editor will not be recorded in the logs. "
+theme_override_styles/panel = SubResource("StyleBoxFlat_16bi3")
+
+[node name="Button" type="Label" parent="VSplitContainer/HSplitContainer/Panel/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer"]
+layout_mode = 2
+text = "?"
+label_settings = SubResource("LabelSettings_tqw23")
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="CounterLabel" type="Label" parent="VSplitContainer/HSplitContainer/Panel/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 modulate = Color(0.501407, 0.501406, 0.501406, 1)
 layout_mode = 2
 size_flags_horizontal = 3
+text = "(20)"
 label_settings = SubResource("LabelSettings_v6bl3")
 horizontal_alignment = 2
 
@@ -142,21 +185,27 @@ horizontal_alignment = 2
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-icon = SubResource("SVGTexture_c4iiw")
+tooltip_text = "Copy All
+Copies all the logs to the clipboard."
+icon = SubResource("SVGTexture_5voln")
 flat = true
 
 [node name="ClearButton" type="Button" parent="VSplitContainer/HSplitContainer/Panel/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-icon = SubResource("SVGTexture_qib1m")
+tooltip_text = "Clear
+Clears all the logs."
+icon = SubResource("SVGTexture_4kas2")
 flat = true
 
 [node name="OptionsButton" type="MenuButton" parent="VSplitContainer/HSplitContainer/Panel/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-icon = SubResource("SVGTexture_fhx01")
+tooltip_text = "Options
+See and change logging options."
+icon = SubResource("SVGTexture_j505w")
 item_count = 5
 popup/item_0/text = "Logging Level"
 popup/item_0/id = 2

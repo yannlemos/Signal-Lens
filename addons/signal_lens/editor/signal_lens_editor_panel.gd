@@ -89,7 +89,7 @@ func _ready() -> void:
 	#graph_edit.get_menu_hbox().move_child(main_buttons_container, 0)
 	#graph_edit.get_menu_hbox().custom_minimum_size.x = graph_edit.size.x
 	graph_edit.get_menu_hbox().reparent(panel_container)
-	graph_edit.get_menu_hbox().hide()
+	#graph_edit.get_menu_hbox().hide()
 	repo_button.icon = EditorInterface.get_base_control().get_theme_icon("ExternalLink", "EditorIcons")
 	
 @onready var repo_button: Button = $EditorPanel/MainButtonsContainer/HBoxContainer2/RepoButton
@@ -522,5 +522,9 @@ func _on_options_index_pressed(option_index: int) -> void:
 
 func _on_connection_opacity_slider_value_changed(value: float) -> void:
 	connection_opacity = value
+	if graph_edit.get_child_count() <= 1: return
+	var target_node: GraphNode = graph_edit.get_child(1)
+	for slot_index in target_node.get_child_count():
+		target_node.set_slot_color_right(slot_index, Color(target_node.get_slot_color_right(slot_index), connection_opacity))
 
 #endregion

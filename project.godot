@@ -8,6 +8,10 @@
 
 config_version=5
 
+[addons]
+
+"Signal Lens/height_to_resize_to"=500.0
+
 [application]
 
 config/name="Signal Lens"
