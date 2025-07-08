@@ -158,7 +158,9 @@ The log consists of:
 - Datetime: Human-friendly date and time at the time of emission, e.g. 2025-07-08T10:27:33
 - Timestamp: Amount of milliseconds passed since the project started running, e.g. 00:00:05:646
 - Process: Current _process frame at the time of emission, e.g. 255 (look for _get_process_frame() in the godot documentation for more info)
-- Physics: Current _physics_process frame at the time of emission, e.g. 567 (look for _get_physics_frame() in the godot documentation for more info)"
+- Physics: Current _physics_process frame at the time of emission, e.g. 567 (look for _get_physics_frame() in the godot documentation for more info)
+- Node Name: The node that is emitting the signal.
+- Signal Name: The signal being emitted."
 theme_override_styles/panel = SubResource("StyleBoxFlat_16bi3")
 
 [node name="Button" type="Label" parent="VSplitContainer/HSplitContainer/Panel/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer/PanelContainer"]
