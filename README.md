@@ -7,7 +7,8 @@
 Supports Godot 4.3 and 4.4.
 </p>
 
-![Signal Lens 1 3 Hero Image](https://github.com/user-attachments/assets/d6d5733f-a971-419e-8f05-2f7ed8b77e24)
+![Pasted image 20250708162005](https://github.com/user-attachments/assets/7324195b-7bcc-4bb2-a915-536ffe70da5f)
+
 
 ## Features
 - Click on a node in the remote scene tree and instantly view all its signals' connections.
