@@ -94,6 +94,8 @@ func _on_node_signal_data_requested(prefix, data) -> bool:
 			var signal_args: Array = raw_signal_data["args"]
 			if signal_args.size() > 0:
 				target_node.connect(parsed_signal_name, _on_target_node_signal_emitted.bind(target_node_name, parsed_signal_name).unbind(signal_args.size()))
+			else:
+				target_node.connect(parsed_signal_name, _on_target_node_signal_emitted.bind(target_node_name, parsed_signal_name))
 				
 	# On node data ready, prepare the array as per the debugger's specifications
 	EngineDebugger.send_message("signal_lens:incoming_node_signal_data", [target_node_name, target_node_signal_data, target_node_class])

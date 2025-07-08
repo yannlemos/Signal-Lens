@@ -29,14 +29,6 @@ grow_vertical = 2
 layout_mode = 2
 text = "Add to counter"
 
-[node name="AddButton2" type="Button" parent="VBoxContainer"]
-layout_mode = 2
-text = "Add to counter"
-
-[node name="AddButton3" type="Button" parent="VBoxContainer"]
-layout_mode = 2
-text = "Add to counter"
-
 [node name="Counter" type="HBoxContainer" parent="VBoxContainer"]
 layout_mode = 2
 
@@ -49,5 +41,5 @@ layout_mode = 2
 text = "0"
 
 [connection signal="counter_updated" from="." to="." method="_on_counter_updated"]
-[connection signal="pressed" from="VBoxContainer/AddButton2" to="." method="_on_add_button_pressed" binds= [10]]
+[connection signal="pressed" from="VBoxContainer/AddButton" to="." method="_on_add_button_pressed"]
 [connection signal="focus_entered" from="VBoxContainer/Counter/CounterValueLabel" to="." method="_on_counter_value_label_focus_entered"]

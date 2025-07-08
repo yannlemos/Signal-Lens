@@ -175,8 +175,9 @@ func clear_graph():
 		if child.name == "_connection_layer": continue
 		child.free()
 	## Necessary for the minimap to update, it seems
-	#graph_edit.minimap_enabled = false
-	#graph_edit.minimap_enabled = true
+	if graph_edit.minimap_enabled:
+		graph_edit.minimap_enabled = false
+		graph_edit.minimap_enabled = true
 
 ## Draws data received from the runtime autoload
 ## The data is packages in the following structure:

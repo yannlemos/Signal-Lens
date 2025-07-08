@@ -44,7 +44,7 @@ func create_log(datetime: String, timestamp: String, node_name: String, signal_n
 		_logs.pop_front()
 		log_container.get_child(0).queue_free()
 	
-	var raw_log = "%s | %s\n%s → %s" % [datetime, timestamp, node_name, signal_name]
+	var raw_log = "%s | %s\n%s | %s\n%s → %s" % [datetime, timestamp, process_frames, physics_frames, node_name, signal_name]
 	if not signal_arguments.is_empty(): raw_log += "\n" + str(signal_arguments)
 	_logs.append(raw_log)
 	
