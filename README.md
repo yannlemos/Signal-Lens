@@ -24,6 +24,7 @@ Supports Godot 4.3 and 4.4.
 ## Installation
 
 Signal Lens can be installed from source by downloading the addons folder from the repo into the addons folder in your project, or directly from the [Godot Asset Library](https://godotengine.org/asset-library/asset/3620).
+
 **IMPORTANT**: After installation, go to Project Settings -> Plugins and press Enable on Signal Lens. It will the appear in Godot's debugger panel.
 
 ## How To Use
