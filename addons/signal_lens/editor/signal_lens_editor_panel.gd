@@ -25,6 +25,8 @@ enum Direction {LEFT, RIGHT}
 enum Options {
 	HIDE_SIGNALS_WITHOUT_CONNECTIONS,
 	HIDE_BUILT_IN_SIGNALS,
+	SHOW_GRAPH_TOOLBAR,
+	SHOW_GRAPH_MINIMAP
 }
 
 ## Emitted on user pressed "refresh" button
@@ -54,6 +56,8 @@ var pulsing_connections: Array = []
 var settings: Dictionary = {
 	Options.HIDE_SIGNALS_WITHOUT_CONNECTIONS: true,
 	Options.HIDE_BUILT_IN_SIGNALS: false,
+	Options.SHOW_GRAPH_TOOLBAR: false,
+	Options.SHOW_GRAPH_MINIMAP: false
 }
 
 # Scene references
@@ -89,6 +93,7 @@ func _ready() -> void:
 	#graph_edit.get_menu_hbox().move_child(main_buttons_container, 0)
 	#graph_edit.get_menu_hbox().custom_minimum_size.x = graph_edit.size.x
 	graph_edit.get_menu_hbox().reparent(panel_container)
+	graph_edit.get_menu_hbox().hide()
 	#graph_edit.get_menu_hbox().hide()
 	repo_button.icon = EditorInterface.get_base_control().get_theme_icon("ExternalLink", "EditorIcons")
 	
@@ -516,9 +521,15 @@ func _on_options_index_pressed(option_index: int) -> void:
 	if options_popup.is_item_checkable(option_index):
 		settings[option_index] = not options_popup.is_item_checked(option_index) # Change state
 		options_popup.set_item_checked(option_index, settings[option_index]) # Apply state
+		
+		if option_index in [Options.HIDE_SIGNALS_WITHOUT_CONNECTIONS, Options.HIDE_BUILT_IN_SIGNALS]:
+			refresh_button.pressed.emit()
+		elif option_index == Options.SHOW_GRAPH_TOOLBAR:
+			graph_edit.get_menu_hbox().visible = settings[option_index]
+		elif option_index == Options.SHOW_GRAPH_MINIMAP:
+			graph_edit.minimap_enabled = settings[option_index]
 	else:
 		_open_project_settings()
-	refresh_button.pressed.emit()
 
 func _on_connection_opacity_slider_value_changed(value: float) -> void:
 	connection_opacity = value

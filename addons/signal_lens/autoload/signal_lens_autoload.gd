@@ -91,8 +91,10 @@ func _on_node_signal_data_requested(prefix, data) -> bool:
 		# Connect this autoload's signal emission capture callable to currently iterated signal
 		# so we can send signal emissions to the editor panel
 		if not target_node.is_connected(parsed_signal_name, _on_target_node_signal_emitted):
-			target_node.connect(parsed_signal_name, _on_target_node_signal_emitted.bind(target_node_name, parsed_signal_name))
-	
+			var signal_args: Array = raw_signal_data["args"]
+			if signal_args.size() > 0:
+				target_node.connect(parsed_signal_name, _on_target_node_signal_emitted.bind(target_node_name, parsed_signal_name).unbind(signal_args.size()))
+				
 	# On node data ready, prepare the array as per the debugger's specifications
 	EngineDebugger.send_message("signal_lens:incoming_node_signal_data", [target_node_name, target_node_signal_data, target_node_class])
 	return true
@@ -111,6 +113,7 @@ func parse_signal_callables_to_debugger_format(raw_signal_connections):
 		# don't have name properties. The names in the nodes are not
 		# very user-friendly right now, so this is a good spot for a 
 		# TODO: improve readability of anonymous lambda nodes
+		if not parsed_callable_object: return {"object_name": "ERROR: Couldn't parse node name."}
 		if parsed_callable_object.get("name") != null:
 			parsed_callable_object_name = parsed_callable_object.get("name")
 		else:
@@ -132,24 +135,41 @@ func parse_signal_callables_to_debugger_format(raw_signal_connections):
 
 ## This callable receives all signal emissions from the currently targeted node
 ## and sends them to the editor panel
-func _on_target_node_signal_emitted(...args: Array):
-	
-	var parsed_args: Array
-	var signal_args = args.slice(0, args.size() - 2)
-	for arg in signal_args:
-		parsed_args.append(str(arg))
-	
+
+func _on_target_node_signal_emitted(node_name: String, signal_name: String):
 	var emission_data: Dictionary = {
-		"node_name": args[args.size() - 2],
-		"signal_name": args[args.size() - 1],
+		"node_name": node_name,
+		"signal_name": signal_name,
+		"signal_arguments": [], # NOTE: Empty for now, will be available in a future release targeting Godot 4.5
 		"datetime": get_current_datetime_string(),
 		"timestamp": get_engine_ticks_string(),
 		"process_frames": Engine.get_process_frames(),
 		"physics_frames": Engine.get_physics_frames(),
-		"signal_arguments": parsed_args
 	}
 	
 	EngineDebugger.send_message("signal_lens:incoming_node_signal_emission", [emission_data])
+
+
+# NOTE: This function is compatible with Godot 4.5+ only, but 1.4.0 version of Signal Lens 
+# will still support 4.3+, so I'm keeping it here so it can reimplemented in a future release.
+#func _on_target_node_signal_emitted(...args: Array):
+	#
+	#var parsed_args: Array
+	#var signal_args = args.slice(0, args.size() - 2)
+	#for arg in signal_args:
+		#parsed_args.append(str(arg))
+	#
+	#var emission_data: Dictionary = {
+		#"node_name": args[args.size() - 2],
+		#"signal_name": args[args.size() - 1],
+		#"datetime": get_current_datetime_string(),
+		#"timestamp": get_engine_ticks_string(),
+		#"process_frames": Engine.get_process_frames(),
+		#"physics_frames": Engine.get_physics_frames(),
+		#"signal_arguments": parsed_args
+	#}
+	#
+	#EngineDebugger.send_message("signal_lens:incoming_node_signal_emission", [emission_data])
 
 func get_current_datetime_string() -> String:
 	return Time.get_datetime_string_from_system()

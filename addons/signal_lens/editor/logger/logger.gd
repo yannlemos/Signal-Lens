@@ -1,10 +1,19 @@
 @tool
+class_name Logger
 extends Control
+
+const MAX_LOGS := 1000
+
+enum Options {
+	DATETIME,
+	TIMESTAMP,
+	PROCESS_FRAME,
+	PHYSICS_FRAME
+}
 
 @export var log_container: Control
 @export var copy_button: Button
 @export var clear_button: Button
-@export var options_button: Button
 @export var v_split_container: VSplitContainer
 @export var h_split_container: HSplitContainer
 @export var log_scroll: ScrollContainer
@@ -15,10 +24,11 @@ var _logs: Array[String]
 var _starting_v_split_margin_end: int
 var _starting_h_split_offset: int
 
+var _options_popup: PopupMenu
+
 func _ready() -> void:
 	copy_button.icon = EditorInterface.get_base_control().get_theme_icon("ActionCopy", "EditorIcons")
 	clear_button.icon = EditorInterface.get_base_control().get_theme_icon("Clear", "EditorIcons")
-	options_button.icon = EditorInterface.get_base_control().get_theme_icon("GuiTabMenuHl", "EditorIcons")
 	_starting_v_split_margin_end = v_split_container.drag_area_margin_end
 	_starting_h_split_offset = h_split_container.split_offset
 	counter_label.text = ""
@@ -30,6 +40,10 @@ func clear():
 	counter_label.text = ""
 
 func create_log(datetime: String, timestamp: String, node_name: String, signal_name: String, signal_arguments: Array, process_frames: int, physics_frames: int):
+	if _logs.size() >= MAX_LOGS:
+		_logs.pop_front()
+		log_container.get_child(0).queue_free()
+	
 	var raw_log = "%s | %s\n%s → %s" % [datetime, timestamp, node_name, signal_name]
 	if not signal_arguments.is_empty(): raw_log += "\n" + str(signal_arguments)
 	_logs.append(raw_log)
@@ -37,8 +51,8 @@ func create_log(datetime: String, timestamp: String, node_name: String, signal_n
 	var pretty_log: String = ""
 	
 	pretty_log += "[font_size=12]"
-	pretty_log += "[color=WEB_GRAY]%s | %s[br]Process: %s | Physics: %s[/color][br]" % [datetime, timestamp, process_frames, physics_frames]
-	pretty_log += "[font_size=13][color=WHITE][b]%s → %s[/b][br]" % [node_name, signal_name]
+	pretty_log += "[color=WEB_GRAY]%s | %s\nProcess: %s | Physics: %s[/color]\n" % [datetime, timestamp, process_frames, physics_frames]
+	pretty_log += "[font_size=13][color=WHITE][b]%s → %s[/b]\n" % [node_name, signal_name]
 	if not signal_arguments.is_empty(): pretty_log += "[color=WHITE]" + str(signal_arguments)
 	
 	var log_label: RichTextLabel = RichTextLabel.new()
