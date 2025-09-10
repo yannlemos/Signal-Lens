@@ -134,7 +134,7 @@ keep_emissions_checkbox = NodePath("EditorPanel/MainButtonsContainer/HBoxContain
 emission_speed_slider = NodePath("EditorPanel/MainButtonsContainer/HBoxContainer2/EmissionSpeedContainer/EmissionSpeedSlider")
 emission_speed_icon = NodePath("EditorPanel/MainButtonsContainer/HBoxContainer2/EmissionSpeedContainer/EmissionSpeedIcon")
 connection_opacity_icon = NodePath("EditorPanel/MainButtonsContainer/HBoxContainer2/ConnectionOpacityContainer/ConnectionOpacityIcon")
-logger = NodePath("EditorPanel/Logger")
+logger = NodePath("EditorPanel/SignalLensLogger")
 
 [node name="EditorPanel" type="PanelContainer" parent="."]
 self_modulate = Color(1, 1, 1, 0)
@@ -305,7 +305,7 @@ Access the plugin's repository on Github to report issues, suggest features and 
 icon = SubResource("ImageTexture_0xhoi")
 flat = true
 
-[node name="Logger" parent="EditorPanel" instance=ExtResource("3_v6bl3")]
+[node name="SignalLensLogger" parent="EditorPanel" instance=ExtResource("3_v6bl3")]
 visible = false
 layout_mode = 2
 theme_override_constants/margin_top = 55

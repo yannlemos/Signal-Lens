@@ -71,7 +71,7 @@ image = SubResource("Image_5voln")
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_v6bl3"]
 color = Color(0.244776, 0.244776, 0.244776, 1)
 
-[node name="Logger" type="MarginContainer" node_paths=PackedStringArray("log_container", "copy_button", "clear_button", "v_split_container", "h_split_container", "log_scroll", "counter_label")]
+[node name="SignalLensLogger" type="MarginContainer" node_paths=PackedStringArray("log_container", "copy_button", "clear_button", "v_split_container", "h_split_container", "log_scroll", "counter_label")]
 custom_minimum_size = Vector2(400, 0)
 anchors_preset = 9
 anchor_bottom = 1.0

@@ -1,5 +1,5 @@
 @tool
-class_name Logger
+class_name SignalLensLogger
 extends Control
 
 const MAX_LOGS := 1000
