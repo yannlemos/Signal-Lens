@@ -4,7 +4,7 @@
 
 <p align="center">
 <b>A Visual Debugger for Signals</b><br>
-Supports Godot 4.3 and 4.4.
+Supports Godot 4.3+
 </p>
 
 ![Pasted image 20250708162005](https://github.com/user-attachments/assets/7324195b-7bcc-4bb2-a915-536ffe70da5f)
